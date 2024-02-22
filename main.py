@@ -1,8 +1,7 @@
-# Assuming this file is at the root of your project structure
 # run_ui.py
 
 from src.mqtt_publisher import MQTTPublisher  # Import the MQTTPublisher class
-from src.ui.hydraulic_ui import hydraulic_ui  # Import the main_ui function
+from src.ui.main_ui import main_ui  # Import the main_ui function
 
 import time  # Import the time module
 
@@ -17,13 +16,13 @@ def main():
 
     while True:
         # Obtain command from the UI
-        topic, command = hydraulic_ui()
+        topic, command = main_ui()
 
-        if topic and command:
+        if topic == "exit":
+            break  # Exit loop if user wants to exit
+        elif topic and command:
             # Publish the command
             publisher.publish_command(topic, command)
-        else:
-            break  # Exit loop if any other input
 
     # Clean up and disconnect
     publisher.disconnect()
