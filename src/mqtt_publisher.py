@@ -5,7 +5,6 @@ import paho.mqtt.client as mqtt
 from config.settings import (
     BROKER,
     PORT,
-    STATUS_TOPICS,
     MQTT_CLIENT_ID,
     HYDRAULIC_RESPONSE_TOPIC,
 )
@@ -20,6 +19,7 @@ class MQTTPublisher:
         self.client.on_message = self.on_message
         # Initialize the connection status to False
         self.connected = False
+        self.device_statuses = {}
 
     def on_connect(self, client, userdata, flags, rc):
         # This method is called when the client successfully connects to the MQTT broker
@@ -30,7 +30,7 @@ class MQTTPublisher:
             # Subscribe to the status topics and the hydraulic response topic
             client.subscribe("status/#")
             client.subscribe(HYDRAULIC_RESPONSE_TOPIC)
-            # Publish the initial status messages
+            # Publish the initial status
         else:
             print(f"Failed to connect, return code {rc}")
 
@@ -44,7 +44,11 @@ class MQTTPublisher:
         # Check if the message is a response to a command
         if msg.topic == HYDRAULIC_RESPONSE_TOPIC:
             print(f"Received response on {msg.topic}: {payload}")
+        elif msg.topic.startswith("status/"):
+            device_id = msg.topic.split("/")[1]  # Get the device ID from the topic
+            self.device_statuses[device_id] = payload  # Update the device's status
             # Handle the response here
+            print(f"Received message on {msg.topic}: {payload}")
         else:
             print(f"Received message on {msg.topic}: {payload}")
             # Handle other messages here
@@ -53,6 +57,15 @@ class MQTTPublisher:
         # Publish a command message to a specified topic
         self.client.publish(topic, message)
         print(f"Published to {topic}: {message}")
+
+    def check_online_status(self, device_id):
+        status = self.device_statuses.get(device_id)
+        if status == "online":
+            print(f"The status of the {device_id} device: {status}")
+            return "online"
+        else:
+            print(f"No status information available for {device_id}")
+            return "offline"
 
     def disconnect(self):
         """Gracefully disconnect the client from the MQTT broker."""

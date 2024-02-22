@@ -9,21 +9,25 @@ import time
 # from src.ui.electrical_ui import electrical_ui
 
 
-def main_ui():
+def main_ui(publisher):
     while True:  # This creates an infinite loop
         print("Select a device to control:")
         print("1: Hydraulic")
-        print("2: Pneumatic")
+        print("2: check online status")
         print("3: Electrical")
         print("4: Shut down")
 
         cmd = input()  # Wait for user input
 
         if cmd == "1":
-            topic, command = hydraulic_ui()
-            return topic, command
+            if publisher.check_online_status("hydraulic") == "online":
+                topic, command = hydraulic_ui()
+                return topic, command
+            else:
+                time.sleep(2)
+                continue  # Return to the main menu
         elif cmd == "2":
-            print("There is no function yet")
+            publisher.check_online_status("hydraulic")
             time.sleep(2)
             return None, None  # Return a tuple instead of None
 
