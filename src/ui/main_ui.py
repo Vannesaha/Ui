@@ -24,7 +24,6 @@ def main_ui(publisher):
                 topic, command = hydraulic_ui()
                 return topic, command
             else:
-                time.sleep(2)
                 continue  # Return to the main menu
         elif cmd == "2":
             publisher.check_online_status("hydraulic")

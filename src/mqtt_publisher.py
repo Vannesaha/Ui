@@ -53,10 +53,13 @@ class MQTTPublisher:
             print(f"Received message on {msg.topic}: {payload}")
             # Handle other messages here
 
-    def publish_command(self, topic, message):
+    def publish_command(self, topic, command):
         # Publish a command message to a specified topic
-        self.client.publish(topic, message)
-        print(f"Published to {topic}: {message}")
+        if command is not None:
+            self.client.publish(topic, command)
+            print(f"Published to {topic}: {command}")
+        else:
+            print("No command to publish.")
 
     def check_online_status(self, device_id):
         status = self.device_statuses.get(device_id)
