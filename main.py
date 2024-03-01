@@ -16,7 +16,7 @@ def main():
 
     while True:
         # Obtain command from the UI
-        topic, command = main_ui()
+        topic, command = main_ui(publisher)
 
         if topic == "exit":
             break  # Exit loop if user wants to exit
