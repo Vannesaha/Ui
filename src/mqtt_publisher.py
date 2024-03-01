@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 from config.settings import (
     BROKER,
     PORT,
-    MQTT_CLIENT_ID,
+    DEVICE_ID,
     HYDRAULIC_RESPONSE_TOPIC,
 )
 
@@ -14,7 +14,7 @@ from config.settings import (
 class MQTTPublisher:
     def __init__(self):
         # Initialize the MQTT client and set up the connection and message callbacks
-        self.client = mqtt.Client(client_id=MQTT_CLIENT_ID)
+        self.client = mqtt.Client(client_id=DEVICE_ID)
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         # Initialize the connection status to False
@@ -60,15 +60,6 @@ class MQTTPublisher:
             print(f"Published to {topic}: {command}")
         else:
             print("No command to publish.")
-
-    def check_online_status(self, device_id):
-        status = self.device_statuses.get(device_id)
-        if status == "online":
-            print(f"The status of the {device_id} device: {status}")
-            return "online"
-        else:
-            print(f"No status information available for {device_id}")
-            return "offline"
 
     def disconnect(self):
         """Gracefully disconnect the client from the MQTT broker."""
