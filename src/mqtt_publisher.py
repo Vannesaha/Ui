@@ -2,17 +2,12 @@
 import paho.mqtt.client as mqtt
 
 # Import the necessary settings from the config module
-from config.settings import (
-    BROKER,
-    PORT,
-    DEVICE_ID,
-    HYDRAULIC_RESPONSE_TOPIC,
-)
+from config.settings import BROKER, PORT, DEVICE_ID, HYDRAULIC_RESPONSE_TOPIC, DEVICE_1
 
 
 # Define the MQTTPublisher class
 class MQTTPublisher:
-    def __init__(self):
+    def __init__(self, gui):
         # Initialize the MQTT client and set up the connection and message callbacks
         self.client = mqtt.Client(client_id=DEVICE_ID)
         self.client.on_connect = self.on_connect
@@ -20,12 +15,14 @@ class MQTTPublisher:
         # Initialize the connection status to False
         self.connected = False
         self.device_statuses = {}
+        self.DEVICE_1 = DEVICE_1
+        self.gui = gui  # Save a reference to the Gui object
 
     def on_connect(self, client, userdata, flags, rc):
         # This method is called when the client successfully connects to the MQTT broker
         if rc == 0:
             print("Connected successfully.")
-            # Set the connection status to True
+            # Set the connection status to Truea
             self.connected = True
             # Subscribe to the status topics and the hydraulic response topic
             client.subscribe("status/#")
@@ -48,6 +45,7 @@ class MQTTPublisher:
             device_id = msg.topic.split("/")[1]  # Get the device ID from the topic
             self.device_statuses[device_id] = payload  # Update the device's status
             # Handle the response here
+            self.gui.statusChecked.emit(device_id, payload)  # Emit the signal here
             print(f"Received message on {msg.topic}: {payload}")
         else:
             print(f"Received message on {msg.topic}: {payload}")

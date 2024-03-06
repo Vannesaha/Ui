@@ -5,18 +5,31 @@ from PyQt6.QtCore import pyqtSlot as Slot
 from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtQml import QQmlApplicationEngine, QQmlContext
+from src.utils.device_status import check_online_status
+
+
 import sys
+from PyQt6.QtCore import pyqtProperty
+
+from config.settings import DEVICE_1  # replace with the actual import statement
 
 
 class Gui(QObject):
-    def __init__(self, publisher):
+    def __init__(self, publisher=None):
         super().__init__()
         self.publisher = publisher
         self.app = QGuiApplication([])
         self.engine = QQmlApplicationEngine()
         self.context = self.engine.rootContext()
         self.context.setContextProperty("gui", self)
+
+        if self.publisher is not None:
+            self.publisher.gui = (
+                self  # Pass a reference to the Gui object to the publisher
+            )
+
         self.load("src/ui/main_ui/main.qml")
+        self._device_ = DEVICE_1
 
     def load(self, qml_file):
         self.engine.clearComponentCache()
@@ -27,18 +40,6 @@ class Gui(QObject):
     def run(self):
         sys.exit(self.app.exec())
 
-    @Slot(str, str)
-    def update_status(self, device_name, status):
-        for i in range(self.context.contextProperty("deviceModel").count()):
-            if (
-                self.context.contextProperty("deviceModel").get(i)["deviceName"]
-                == device_name
-            ):
-                self.context.contextProperty("deviceModel").setProperty(
-                    i, "status", status
-                )
-                break
-
     @Slot()
     def quit_application(self):
         print("quit_application called")
@@ -48,3 +49,16 @@ class Gui(QObject):
     @Slot(str, str)
     def publish_command(self, topic, command):
         self.publisher.publish_command(topic, command)
+
+    @pyqtProperty(str)
+    def DEVICE_1(self):
+        return self._device_
+
+    statusChecked = Signal(str, str)  # Define the signal
+
+    @Slot(str)
+    def check_online_status(self, device_id):
+        print(f"Checking status for {device_id}")
+        status = check_online_status(self.publisher.device_statuses, device_id)
+        print(f"Status of {device_id}: {status}")
+        self.statusChecked.emit(device_id, status)  # Emit signal here

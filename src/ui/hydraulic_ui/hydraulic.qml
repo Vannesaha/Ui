@@ -9,20 +9,31 @@ Dialog {
 
     signal hydraulicSet(int cylinder, int position)
 
-    SpinBox {
-        id: cylinderSpinBox
-        from: 0
-        to: 3
-        stepSize: 1
-        prefix: "Cylinder: "
-    }
+    Column {
+        spacing: 10
+        Row {
+            Label {
+                text: "Cylinder: "
+            }
+            SpinBox {
+                id: cylinderSpinBox
+                from: 0
+                to: 3
+                stepSize: 1
+            }
+        }
 
-    SpinBox {
-        id: positionSpinBox
-        from: 0
-        to: 180
-        stepSize: 1
-        prefix: "Position: "
+        Row {
+            Label {
+                text: "Position: "
+            }
+            SpinBox {
+                id: positionSpinBox
+                from: 0
+                to: 100
+                stepSize: 1
+            }
+        }
     }
 
     onAccepted: {

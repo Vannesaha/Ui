@@ -1,5 +1,6 @@
-from config.settings import DEVICE_1
 import time
+
+from config.settings import DEVICE_1
 
 
 def get_cylinder_number():
@@ -22,7 +23,7 @@ def get_cylinder_position():
             time.sleep(2)
 
 
-def hydraulic_ui():
+def hydraulic_ui(publisher):
     while True:
         cmd = get_cylinder_number()
 
@@ -30,5 +31,5 @@ def hydraulic_ui():
         _, position = get_cylinder_position()
         topic = f"device/{DEVICE_1}/{cmd}"
         command = f"set_hydraulic:{position}"
-        return topic, command
-        # Publish the command
+        # Send the position
+        publisher.publish_command(topic, command)
