@@ -42,8 +42,26 @@ ApplicationWindow {
             onClicked: {   // Define what happens when an item is clicked
             if (action === "Hydraulic")
             {
-                hydraulic.open();
-                //print("Hydraulic clicked");
+                // Get the status of the hydraulic device
+                var hydraulicStatus = "OFF";
+                for (var i = 0; i < deviceModel.count; i++) {
+                    if (deviceModel.get(i).action === "Hydraulic")
+                    {
+                        hydraulicStatus = deviceModel.get(i).status;
+                        break;
+                    }
+                }
+
+                // Check if the hydraulic device is ON
+                if (hydraulicStatus === "ON")
+                {
+                    hydraulic.open();
+                }
+                else {
+                    // The hydraulic device is OFF, show a warning message
+                    console.warn("The hydraulic device is OFF. Please turn it ON before opening the hydraulic dialog.");
+
+                }
             }
             else if (action === "Embedded")
             {
@@ -70,6 +88,8 @@ ApplicationWindow {
 // Define a Hydraulic object from the custom module
 HydraulicUi.Hydraulic {
     id: hydraulic
+    x: (parent.width - width) / 2
+    y: (parent.height - height) / 2
     onHydraulicSet: function(cylinder, position) {
     var topic = "device/" + gui.DEVICE_1 + "/" + cylinder;
     var command = "set_hydraulic:" + position;
