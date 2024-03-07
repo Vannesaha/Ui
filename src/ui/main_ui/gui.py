@@ -11,7 +11,10 @@ from src.utils.device_status import check_online_status
 import sys
 from PyQt6.QtCore import pyqtProperty
 
-from config.settings import DEVICE_1  # replace with the actual import statement
+from config.settings import (
+    DEVICE_1,
+    DEVICE_2,
+)  # replace with the actual import statement
 
 
 class Gui(QObject):
@@ -28,8 +31,10 @@ class Gui(QObject):
                 self  # Pass a reference to the Gui object to the publisher
             )
 
+        self._device_1 = DEVICE_1
+        self._device_2 = DEVICE_2
+
         self.load("src/ui/main_ui/main.qml")
-        self._device_ = DEVICE_1
 
     def load(self, qml_file):
         self.engine.clearComponentCache()
@@ -52,7 +57,11 @@ class Gui(QObject):
 
     @pyqtProperty(str)
     def DEVICE_1(self):
-        return self._device_
+        return self._device_1
+
+    @pyqtProperty(str)
+    def DEVICE_2(self):
+        return self._device_2
 
     statusChecked = Signal(str, str)  # Define the signal
 
