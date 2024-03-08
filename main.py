@@ -1,36 +1,25 @@
 # main.py
 
-from src.mqtt_publisher import MQTTPublisher  # Import the MQTTPublisher class
+from PyQt6.QtGui import QGuiApplication  # Import QGuiApplication
 from PyQt6.QtCore import QCoreApplication
-from src.ui.main_ui.gui import Gui  # Import the Gui class
+from src.ui.main_ui.gui import Gui
+from src.ui.start_ui.start_ui import Start_ui
 
-import time  # Import the time module
+import sys  # Import sys
 
 
 def main():
     global exit_flag
 
-    # Create an instance of Gui without passing the publisher
-    gui = Gui()
+    # Create a QGuiApplication
+    app = QGuiApplication(sys.argv)
 
-    # Create an instance of MQTTPublisher and pass the gui instance
-    publisher = MQTTPublisher(gui)
+    # Create an instance of Start_ui
+    start_ui = Start_ui()
+    start_ui.run()
 
-    # Assign the publisher to the gui's publisher attribute
-    gui.publisher = publisher
-    gui.publisher.gui = gui
-
-    publisher.run()
-
-    # Wait until the connection is established before entering the loop
-    while not publisher.is_connected():
-        time.sleep(0.1)  # Sleep for a short time to avoid busy waiting
-
-    # Run the Gui
-    gui.run()
-
-    # Clean up and disconnect
-    publisher.disconnect()
+    # Start the event loop
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

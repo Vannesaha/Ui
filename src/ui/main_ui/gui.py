@@ -18,10 +18,10 @@ from config.settings import (
 
 
 class Gui(QObject):
-    def __init__(self, publisher=None):
+    def __init__(self, parent=None, publisher=None):
         super().__init__()
         self.publisher = publisher
-        self.app = QGuiApplication([])
+        self.app = QGuiApplication.instance()
         self.engine = QQmlApplicationEngine()
         self.context = self.engine.rootContext()
         self.context.setContextProperty("gui", self)
@@ -34,9 +34,9 @@ class Gui(QObject):
         self._device_1 = DEVICE_1
         self._device_2 = DEVICE_2
 
-        self.load("src/ui/main_ui/main.qml")
+    #   self.load("src/ui/main_ui/main.qml")
 
-        # Signals
+    # Signals
 
     statusChecked = Signal(str, str)  # Define the signal
     hydraulicResponseReceived = Signal(str)  # Define the signal
@@ -44,6 +44,11 @@ class Gui(QObject):
     def load(self, qml_file):
         self.engine.clearComponentCache()
         self.engine.load(QUrl(qml_file))
+        if not self.engine.rootObjects():
+            sys.exit(-1)
+
+    def show(self):
+        self.load("src/ui/main_ui/main.qml")
         if not self.engine.rootObjects():
             sys.exit(-1)
 
