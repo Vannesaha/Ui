@@ -36,6 +36,11 @@ class Gui(QObject):
 
         self.load("src/ui/main_ui/main.qml")
 
+        # Signals
+
+    statusChecked = Signal(str, str)  # Define the signal
+    hydraulicResponseReceived = Signal(str)  # Define the signal
+
     def load(self, qml_file):
         self.engine.clearComponentCache()
         self.engine.load(QUrl(qml_file))
@@ -62,8 +67,6 @@ class Gui(QObject):
     @pyqtProperty(str)
     def DEVICE_2(self):
         return self._device_2
-
-    statusChecked = Signal(str, str)  # Define the signal
 
     @Slot(str)
     def check_online_status(self, device_id):

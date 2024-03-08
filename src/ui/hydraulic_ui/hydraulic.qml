@@ -30,7 +30,7 @@ Dialog {
             SpinBox {
                 id: positionSpinBox
                 from: 0
-                to: 100
+                to: 180
                 stepSize: 1
             }
         }

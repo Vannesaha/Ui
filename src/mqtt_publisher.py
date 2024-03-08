@@ -41,6 +41,7 @@ class MQTTPublisher:
         # Check if the message is a response to a command
         if msg.topic == HYDRAULIC_RESPONSE_TOPIC:
             print(f"Received response on {msg.topic}: {payload}")
+            self.gui.hydraulicResponseReceived.emit(payload)  # Emit the signal here
         elif msg.topic.startswith("status/"):
             device_id = msg.topic.split("/")[1]  # Get the device ID from the topic
             self.device_statuses[device_id] = payload  # Update the device's status
