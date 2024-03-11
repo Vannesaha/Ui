@@ -74,7 +74,7 @@ class Gui(QObject):
         return self._device_2
 
     @Slot(str)
-    def check_online_status(self, device_id):
+    def check_online_status(self, device_id, playload):
         print(f"Checking status for {device_id}")
         status = check_online_status(self.publisher.device_statuses, device_id)
         print(f"Status of {device_id}: {status}")

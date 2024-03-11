@@ -47,8 +47,12 @@ class MQTTPublisher:
             self.device_statuses[device_id] = payload  # Update the device's status
             # Handle the response here
             self.gui.statusChecked.emit(device_id, payload)  # Emit the signal here
-            print(f"Received message on {msg.topic}: {payload}")
+            print(f"Received status message on {msg.topic}: {payload}")
             # print(f"Device statuses: {self.device_statuses}")
+            self.gui.check_online_status(
+                device_id, payload
+            )  # Call the method here with necessary parameters
+
         else:
             print(f"Received message on {msg.topic}: {payload}")
             # Handle other messages here

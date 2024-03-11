@@ -1,5 +1,6 @@
 # main.py
 
+
 from PyQt6.QtGui import QGuiApplication  # Import QGuiApplication
 from PyQt6.QtCore import QCoreApplication
 from src.ui.main_ui.gui import Gui

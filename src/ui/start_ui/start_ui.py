@@ -15,30 +15,37 @@ import time
 
 
 class Start_ui(QObject):
-    def __init__(self, publisher=None):
+    def __init__(self):
         super().__init__()
-        self.publisher = publisher
         self.app = QGuiApplication.instance()
         self.engine = QQmlApplicationEngine()
-        self.context = self.engine.rootContext()
-        self.context.setContextProperty("start_ui", self)
-        self.load("src/ui/start_ui/start_ui.qml")
 
-        # Create an instance of Gui
-        self.gui = Gui()
+        # Luo instanssi MQTTPublisher-luokasta ja välitetään Gui-instanssi sille.
+        self.gui = Gui()  # Oletetaan, että Gui:n konstruktori ei vaadi argumentteja.
 
-        # Create an instance of MQTTPublisher and pass the gui instance
+        # Luodaan sitten MQTTPublisher-instanssi ja välitetään Gui-instanssi sille.
         self.publisher = MQTTPublisher(self.gui)
 
-        # Assign the publisher to the gui's publisher attribute
+        # Varmistetaan, että Gui ja MQTTPublisher tietävät toisistaan.
         self.gui.publisher = self.publisher
-        self.gui.publisher.gui = self.gui
+        self.publisher.gui = self.gui
 
+        # Käynnistetään MQTTPublisher.
         self.publisher.run()
 
-        # Wait until the connection is established before showing the gui
+        # Odota, kunnes yhteys MQTT-palvelimeen on muodostettu.
         while not self.publisher.is_connected():
-            time.sleep(0.1)  # Sleep for a short time to avoid busy waiting
+            time.sleep(0.1)
+
+        # Asetetaan Gui kontekstiksi QML-ympäristöön.
+        # Tämä on jo tehty tässä vaiheessa, joten "self.context" ei ole tarpeen määritellä uudelleen.
+        self.engine.rootContext().setContextProperty("gui", self.gui)
+        self.engine.rootContext().setContextProperty(
+            "start_ui", self
+        )  # Oikea tapa asettaa konteksti
+
+        # Ladataan QML-moottori.
+        self.engine.load(QUrl("src/ui/start_ui/start_ui.qml"))
 
     def load(self, qml_file):
         self.engine.clearComponentCache()
@@ -47,7 +54,7 @@ class Start_ui(QObject):
             sys.exit(-1)
 
     def run(self):
-        self.gui.run
+        self.gui.run()
 
     @Slot()
     def quit_application(self):
