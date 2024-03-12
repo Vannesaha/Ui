@@ -1,3 +1,5 @@
+# MQTT Publisher class
+
 # Import the MQTT client from the Paho library
 import paho.mqtt.client as mqtt
 
@@ -41,17 +43,16 @@ class MQTTPublisher:
         # Check if the message is a response to a command
         if msg.topic == HYDRAULIC_RESPONSE_TOPIC:
             print(f"Received response on {msg.topic}: {payload}")
-            self.gui.hydraulicResponseReceived.emit(payload)  # Emit the signal here
+            # self.gui.hydraulicResponseReceived.emit(payload)  # Emit the signal here
         elif msg.topic.startswith("status/"):
             device_id = msg.topic.split("/")[1]  # Get the device ID from the topic
-            self.device_statuses[device_id] = payload  # Update the device's status
+            status = payload
+            # self.device_statuses[device_id] = payload  # Update the device's status
             # Handle the response here
-            self.gui.statusChecked.emit(device_id, payload)  # Emit the signal here
-            print(f"Received status message on {msg.topic}: {payload}")
+            self.gui.statusChecked.emit(device_id, status)  # Emit the signal here
+            # print(f"Received status message on {msg.topic}: {payload}")
             # print(f"Device statuses: {self.device_statuses}")
-            self.gui.check_online_status(
-                device_id, payload
-            )  # Call the method here with necessary parameters
+            # self.gui.check_online_status(device_id, payload)  # Call the method here with necessary parameters
 
         else:
             print(f"Received message on {msg.topic}: {payload}")

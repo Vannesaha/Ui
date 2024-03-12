@@ -1,5 +1,3 @@
-// start_ui.qml
-
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -47,7 +45,7 @@ ApplicationWindow {
                     else if (action === "Start")
                     {
                         deviceModel.setProperty(index, "startResponse", "Start clicked");
-                        start_ui.start_gui();
+                        start_menu.start_gui();
                     }
                     else if (action === "Shutdown")
                     {
