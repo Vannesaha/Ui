@@ -36,7 +36,7 @@ ApplicationWindow {
         }
     }
 
-Label {
+/* Label {
     id: statusLabel
     text: "Not updated yet"
 }
@@ -52,7 +52,7 @@ Label {
 
     function testFunction(device_id, status) {
         statusLabel.text = "Test function called";
-    }
+    } */
 
 
 /* Component.onCompleted: {
@@ -66,7 +66,7 @@ Label {
     }
 } */
 
-Connections {
+/* Connections {
     target: control_menu
 
     function onSignalTest() {
@@ -76,7 +76,7 @@ Connections {
         statusLabel.text = "Device status updated";
     }
 }
-
+ */
 
 
 

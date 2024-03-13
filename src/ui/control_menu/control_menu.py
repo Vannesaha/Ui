@@ -1,5 +1,22 @@
 # control_menu.py
 
+from PyQt6.QtCore import QUrl
+from PyQt6.QtQml import QQmlApplicationEngine
+import sys
+
+
+class Control_Menu:
+    def __init__(self):
+        self.engine = QQmlApplicationEngine()
+
+    def show(self):
+        self.engine.load(QUrl.fromLocalFile("src/ui/control_menu/control_menu.qml"))
+        if not self.engine.rootObjects():
+            sys.exit(-1)
+
+
+""" # control_menu.py
+
 from PyQt6.QtCore import QUrl, QObject, pyqtSignal as Signal
 from PyQt6.QtCore import pyqtSlot as Slot
 from PyQt6.QtGui import QGuiApplication
@@ -86,3 +103,4 @@ class Control_Menu(QObject):
     def emitTestSignal(self):
         print("Emitting signalTest from Python")
         self.signalTest.emit()
+ """

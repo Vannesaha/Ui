@@ -9,8 +9,8 @@ ApplicationWindow {
     title: "Start Menu"
 
     property ListModel deviceModel: ListModel {
-        ListElement { action: "Start"; startResponse: "" }
-        ListElement { action: "Settings"; settingsResponse: "" }
+        ListElement { action: 1; startResponse: ""; buttonText: "Start"}
+        ListElement { action: 2; settingsResponse: ""; buttonText: "Settings"}
     }
 
     ListView {
@@ -29,22 +29,17 @@ ApplicationWindow {
             RowLayout {
                 anchors.fill: parent
                 anchors.margins: 10
-                Text { text: action }
+                Text { text: buttonText }
                 Text { text: settingsResponse }
                 Text { text: startResponse }
             }
 
-            MouseArea {
+                    MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (action === "Settings")
-                    {
-                        deviceModel.setProperty(index, "settingsResponse", "Settings clicked");
-                    }
-                    else if (action === "Start")
-                    {
-                        deviceModel.setProperty(index, "startResponse", "Start clicked");
-                        start_menu.start_gui();
+                    // This is a simplified way to check which button was clicked
+                    if (action === 1) {
+                        controller.openControlMenuSignal() // Assuming you have a method connected to the signal
                     }
                 }
             }

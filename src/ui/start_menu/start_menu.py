@@ -1,4 +1,22 @@
-# start_menu.py
+# src/ui/start_menu/start_menu.py
+
+from PyQt6.QtCore import QUrl
+from PyQt6.QtQml import QQmlApplicationEngine
+
+
+class Start_Menu:
+    def __init__(self, controller):
+        self.engine = QQmlApplicationEngine()
+        self.controller = controller
+        self.engine.rootContext().setContextProperty("controller", controller)
+        self.engine.load(QUrl.fromLocalFile("src/ui/start_menu/start_menu.qml"))
+
+    def show(self):
+        if not self.engine.rootObjects():
+            exit(-1)
+
+
+""" # start_menu.py
 
 from PyQt6.QtCore import QUrl, QObject, pyqtSignal as Signal
 from PyQt6.QtCore import pyqtSlot as Slot
@@ -8,7 +26,7 @@ from PyQt6.QtQml import QQmlApplicationEngine, QQmlContext
 from PyQt6.QtCore import pyqtProperty
 
 from src.ui.control_menu.control_menu import Control_Menu
-from src.mqtt_publisher import MQTTPublisher
+from src.utils.mqtt_publisher import MQTTPublisher
 
 import sys
 import time
@@ -60,3 +78,4 @@ class Start_Menu(QObject):
     def start_gui(self):
         self.control_menu = Control_Menu(self.publisher)
         self.control_menu.show()
+ """
