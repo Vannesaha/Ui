@@ -6,12 +6,11 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: "Device Control"
+    title: "Start Menu"
 
     property ListModel deviceModel: ListModel {
-        ListElement { action: "Settings"; settingsResponse: "" }
         ListElement { action: "Start"; startResponse: "" }
-        ListElement { action: "Shutdown" }
+        ListElement { action: "Settings"; settingsResponse: "" }
     }
 
     ListView {
@@ -46,10 +45,6 @@ ApplicationWindow {
                     {
                         deviceModel.setProperty(index, "startResponse", "Start clicked");
                         start_menu.start_gui();
-                    }
-                    else if (action === "Shutdown")
-                    {
-                        start_ui.quit_application();
                     }
                 }
             }

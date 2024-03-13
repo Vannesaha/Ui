@@ -9,7 +9,7 @@ from config.settings import BROKER, PORT, DEVICE_ID, HYDRAULIC_RESPONSE_TOPIC, D
 
 # Define the MQTTPublisher class
 class MQTTPublisher:
-    def __init__(self, gui):
+    def __init__(self, control_menu):
         # Initialize the MQTT client and set up the connection and message callbacks
         self.client = mqtt.Client(client_id=DEVICE_ID)
         self.client.on_connect = self.on_connect
@@ -18,7 +18,7 @@ class MQTTPublisher:
         self.connected = False
         self.device_statuses = {}
         self.DEVICE_1 = DEVICE_1
-        self.gui = gui  # Save a reference to the Gui object
+        self.control_menu = control_menu  # Save a reference to the Gui object
 
     def on_connect(self, client, userdata, flags, rc):
         # This method is called when the client successfully connects to the MQTT broker
@@ -49,11 +49,13 @@ class MQTTPublisher:
             status = payload
             # self.device_statuses[device_id] = payload  # Update the device's status
             # Handle the response here
-            self.gui.statusChecked.emit(device_id, status)  # Emit the signal here
+            self.control_menu.statusChecked.emit(
+                device_id, status
+            )  # Emit the signal here
             # print(f"Received status message on {msg.topic}: {payload}")
             # print(f"Device statuses: {self.device_statuses}")
             # self.gui.check_online_status(device_id, payload)  # Call the method here with necessary parameters
-
+            self.control_menu.emitTestSignal()
         else:
             print(f"Received message on {msg.topic}: {payload}")
             # Handle other messages here
