@@ -3,7 +3,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import "../hydraulic_ui" as HydraulicUi
+import "../hydraulic_menu" as HydraulicUi
 
 ApplicationWindow {
 
@@ -43,7 +43,35 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (action === "back")
+                    if (action === "connection")
+                    {
+                        controller.testAndConnectSignal(); // no function in controller yet
+                    }
+                    else if (action === "hydraulic")
+                    {
+                        controller.openHydraulicMenuSignal();
+                    }
+                    else if (action === "embedded")
+                    {
+                        controller.testEmbeddedSignal(); // no function in controller yet
+                    }
+                    else if (action === "steelMotor")
+                    {
+                        controller.testSteelMotorSignal(); // no function in controller yet
+                    }
+                    else if (action === "steelGuide")
+                    {
+                        controller.testSteelGuideSignal(); // no function in controller yet
+                    }
+                    else if (action === "cuttingBlade")
+                    {
+                        controller.testCuttingBladeSignal(); // no function in controller yet
+                    }
+                    else if (action === "Sensor")
+                    {
+                        controller.testSensorSignal(); // no function in controller yet
+                    }
+                    else if (action === "back")
                     {
                         controller.goBackStartMenuSignal();
                     }

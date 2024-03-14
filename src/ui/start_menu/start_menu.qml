@@ -5,14 +5,13 @@ import QtQuick.Layouts 1.15
 ApplicationWindow {
 
     objectName: "start_menu"
-    visible: false
     width: 640
     height: 480
     title: "Päävalikko"
 
     property ListModel model_startMenu: ListModel {
-        ListElement { action: 1; startResponse: ""; buttonText: "Aloita "}
-        ListElement { action: 2; settingsResponse: ""; buttonText: "Asetukset"}
+        ListElement { action: "start"; startResponse: ""; buttonText: "Aloita "}
+        ListElement { action: "settings"; settingsResponse: ""; buttonText: "Asetukset"}
     }
 
     ListView {
@@ -40,9 +39,13 @@ ApplicationWindow {
                 anchors.fill: parent
                 onClicked: {
                     // This is a simplified way to check which button was clicked
-                    if (action === 1)
+                    if (action === "start")
                     {
                         controller.openControlMenuSignal() // Assuming you have a method connected to the signal
+                    }
+                    else if (action === "settings")
+                    {
+                        controller.openSettingsMenuSignal() // no function yet
                     }
                 }
             }
