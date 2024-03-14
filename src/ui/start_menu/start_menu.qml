@@ -3,7 +3,9 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 ApplicationWindow {
-    visible: true
+
+    objectName: "start_menu"
+    visible: false
     width: 640
     height: 480
     title: "Start Menu"
@@ -34,11 +36,12 @@ ApplicationWindow {
                 Text { text: startResponse }
             }
 
-                    MouseArea {
+            MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     // This is a simplified way to check which button was clicked
-                    if (action === 1) {
+                    if (action === 1)
+                    {
                         controller.openControlMenuSignal() // Assuming you have a method connected to the signal
                     }
                 }
