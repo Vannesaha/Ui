@@ -47,16 +47,21 @@ class MQTTPublisher:
         elif msg.topic.startswith("status/"):
             device_id = msg.topic.split("/")[1]  # Get the device ID from the topic
             status = payload
+            # print(f"Received status message on {msg.topic}: {payload}")
+
             # self.device_statuses[device_id] = payload  # Update the device's status
             # Handle the response here
             # self.control_menu.statusChecked.emit(
             #   device_id, status
             # )  # Emit the signal here
-            print(f"Received status message on {msg.topic}: {payload}")
             # print(f"Device statuses: {self.device_statuses}")
             # self.gui.check_online_status(device_id, payload)  # Call the method here with necessary parameters
             # self.control_menu.emitTestSignal()
-            self.controller.emitTestSignal()  # Call the method here with necessary parameters
+
+            # self.controller.emitTestSignal()  # Call the method here with necessary parameters
+            self.controller.emitStatusUpdate(
+                device_id, status
+            )  # Call the method here with necessary parameters
 
         else:
             print(f"Received message on {msg.topic}: {payload}")

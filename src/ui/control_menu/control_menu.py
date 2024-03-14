@@ -1,6 +1,7 @@
 # control_menu.py
 
-from PyQt6.QtCore import QUrl, QObject
+from PyQt6.QtCore import QUrl, QObject, pyqtSlot as Slot
+
 import sys
 
 
@@ -33,9 +34,6 @@ class Control_Menu(QObject):
         if self.root is None:
             sys.exit(-1)
 
-        # Connect the testSignal to the handleTestSignal method
-        self.controller.testSignal.connect(self.handleTestSignal)
-
     # Method to get the root object of the control menu
     def get_root_object(self):
         # Loop over all root objects in the engine
@@ -58,10 +56,6 @@ class Control_Menu(QObject):
         # If the root object is not None, set its "visible" property to False
         if self.root is not None:
             self.root.setProperty("visible", False)
-
-    def handleTestSignal(self):
-        # This method is the slot for the testSignal
-        print("Control Menu received the test signal!")
 
 
 """ # control_menu.py

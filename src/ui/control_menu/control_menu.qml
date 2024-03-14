@@ -14,9 +14,9 @@ ApplicationWindow {
     title: "Control Menu"
 
     property ListModel deviceModel: ListModel {
-        ListElement { action: 1; status: "OFF"; buttonText: "Hydraulic" }
-        ListElement { action: 2; status: "OFF"; buttonText: "Embedded" }
-        ListElement { action: 3; buttonText: "Back to start menu" }
+        ListElement { action: 'hydraulic'; status: "OFF"; buttonText: "Hydraulic" }
+        ListElement { action: 'embedded'; status: "OFF"; buttonText: "Embedded" }
+        ListElement { action: 'back'; buttonText: "Back to start menu" }
     }
 
     ListView {
@@ -38,7 +38,7 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    if (buttonText === "Back to start menu")
+                    if (action === "back")
                     {
                         controller.goBackStartMenuSignal();
                     }
@@ -47,9 +47,26 @@ ApplicationWindow {
         }
     }
 
-    /* Label {
-    id: statusLabel
-    text: "Not updated yet"
+    Connections {
+        target: controller
+        onUpdateStatusSignal: function(device_id, status) { updatedStatus(device_id, status); }
+    }
+
+    function updatedStatus(device_id, status)
+    {
+        //console.log("form control_menu qml " + device_id + " status: " + status)
+        var updatedStatus = status === "online" ? "ON" : "OFF";
+        for (var i = 0; i < deviceModel.count; i++) {
+            var item = deviceModel.get(i);
+            if ((device_id === "hydraulic" && item.action === 'hydraulic') ||
+            (device_id === "embedded" && item.action === 'embedded')) {
+            deviceModel.setProperty(i, "status", updatedStatus);
+        }
+    }
+}
+/* Label {
+id: statusLabel
+text: "Not updated yet"
 }
 
 function updateStatus(device_id, status)

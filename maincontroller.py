@@ -1,6 +1,6 @@
 # maincontroller.py
 
-from PyQt6.QtCore import QObject, pyqtSignal as Signal
+from PyQt6.QtCore import QObject, pyqtSignal as Signal, pyqtSignal
 from PyQt6.QtQml import QQmlApplicationEngine
 from src.ui.start_menu.start_menu import Start_Menu
 from src.ui.control_menu.control_menu import Control_Menu
@@ -12,7 +12,7 @@ class MainController(QObject):
     openControlMenuSignal = Signal()  # Signal to open the control menu
     goBackStartMenuSignal = Signal()  # Signal to go back to the start menu
 
-    testSignal = Signal()  # Define the signal
+    updateStatusSignal = pyqtSignal(str, str)  # Signal to update the status of a device
 
     def __init__(self):
         super().__init__()
@@ -44,6 +44,6 @@ class MainController(QObject):
         self.control_menu.hide()
         self.start_menu.show()
 
-    def emitTestSignal(self):
-        # print("MainController.emitTestSignal called")
-        self.testSignal.emit()
+    # Emit signals functions
+    def emitStatusUpdate(self, device_id, status):
+        self.updateStatusSignal.emit(device_id, status)
