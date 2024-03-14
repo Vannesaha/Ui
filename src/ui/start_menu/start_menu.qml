@@ -8,11 +8,11 @@ ApplicationWindow {
     visible: false
     width: 640
     height: 480
-    title: "Start Menu"
+    title: "Päävalikko"
 
     property ListModel model_startMenu: ListModel {
-        ListElement { action: 1; startResponse: ""; buttonText: "Start"}
-        ListElement { action: 2; settingsResponse: ""; buttonText: "Settings"}
+        ListElement { action: 1; startResponse: ""; buttonText: "Aloita "}
+        ListElement { action: 2; settingsResponse: ""; buttonText: "Asetukset"}
     }
 
     ListView {

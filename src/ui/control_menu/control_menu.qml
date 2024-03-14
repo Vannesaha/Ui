@@ -11,12 +11,17 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: "Control Menu"
+    title: "Sahan käyttöönotto"
 
     property ListModel model_controlMenu: ListModel {
-        ListElement { action: 'hydraulic'; status: "OFF"; buttonText: "Hydraulic" }
-        ListElement { action: 'embedded'; status: "OFF"; buttonText: "Embedded" }
-        ListElement { action: 'back'; buttonText: "Back to start menu" }
+        ListElement { action: 'connection'; buttonText: "Testaa ja kytke yhteydet" }
+        ListElement { action: 'hydraulic'; status: "OFF"; buttonText: "Testaa hydrauliikka" }
+        ListElement { action: 'embedded'; status: "OFF"; buttonText: "Testaa Sahakelkka" }
+        ListElement { action: 'steelMotor'; buttonText: "Testaa Terämoottori" }
+        ListElement { action: 'steelGuide'; buttonText: "Testaa Teräohjuri" }
+        ListElement { action: 'cuttingBlade'; buttonText: "Testaa perkkuuterä" }
+        ListElement { action: 'Sensor'; buttonText: "Anturit" }
+        ListElement { action: 'back'; buttonText: "Takaisin" }
     }
 
     ListView {
