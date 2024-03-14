@@ -56,6 +56,7 @@ class MQTTPublisher:
             # print(f"Device statuses: {self.device_statuses}")
             # self.gui.check_online_status(device_id, payload)  # Call the method here with necessary parameters
             # self.control_menu.emitTestSignal()
+            self.controller.emitTestSignal()  # Call the method here with necessary parameters
 
         else:
             print(f"Received message on {msg.topic}: {payload}")

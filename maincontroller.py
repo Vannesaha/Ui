@@ -12,6 +12,8 @@ class MainController(QObject):
     openControlMenuSignal = Signal()  # Signal to open the control menu
     goBackStartMenuSignal = Signal()  # Signal to go back to the start menu
 
+    testSignal = Signal()  # Define the signal
+
     def __init__(self):
         super().__init__()
         self.engine = QQmlApplicationEngine()
@@ -24,6 +26,8 @@ class MainController(QObject):
         # Connect the signals to the methods
         self.openControlMenuSignal.connect(self.openControlMenu)
         self.goBackStartMenuSignal.connect(self.goBackStartMenu)
+
+        # self.testSignal.connect(self.emitTestSignal)  # Connect the signal to the method
 
     def startApplication(self):
         self.start_menu = Start_Menu(controller=self, engine=self.engine)
@@ -39,3 +43,7 @@ class MainController(QObject):
     def goBackStartMenu(self):
         self.control_menu.hide()
         self.start_menu.show()
+
+    def emitTestSignal(self):
+        # print("MainController.emitTestSignal called")
+        self.testSignal.emit()

@@ -5,9 +5,13 @@ import sys
 
 
 # Define the Control_Menu class
-class Control_Menu:
+class Control_Menu(QObject):
     # The constructor takes an engine as an argument
     def __init__(self, engine, controller):
+        super().__init__()  # Call the __init__ method of the superclass
+
+        self.controller = controller
+
         # Store the engine as an instance variable
         self.engine = engine
         self.loaded = False
@@ -28,6 +32,9 @@ class Control_Menu:
         # If the root object couldn't be found, exit the program
         if self.root is None:
             sys.exit(-1)
+
+        # Connect the testSignal to the handleTestSignal method
+        self.controller.testSignal.connect(self.handleTestSignal)
 
     # Method to get the root object of the control menu
     def get_root_object(self):
@@ -51,6 +58,10 @@ class Control_Menu:
         # If the root object is not None, set its "visible" property to False
         if self.root is not None:
             self.root.setProperty("visible", False)
+
+    def handleTestSignal(self):
+        # This method is the slot for the testSignal
+        print("Control Menu received the test signal!")
 
 
 """ # control_menu.py
