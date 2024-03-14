@@ -10,7 +10,7 @@ ApplicationWindow {
     height: 480
     title: "Start Menu"
 
-    property ListModel deviceModel: ListModel {
+    property ListModel model_startMenu: ListModel {
         ListElement { action: 1; startResponse: ""; buttonText: "Start"}
         ListElement { action: 2; settingsResponse: ""; buttonText: "Settings"}
     }
@@ -20,7 +20,7 @@ ApplicationWindow {
         anchors.fill: parent
         width: 200
         height: 300
-        model: deviceModel
+        model: model_startMenu
 
         delegate: Rectangle {
             width: listView.width

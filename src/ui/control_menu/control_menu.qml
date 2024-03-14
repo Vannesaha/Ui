@@ -13,7 +13,7 @@ ApplicationWindow {
     height: 480
     title: "Control Menu"
 
-    property ListModel deviceModel: ListModel {
+    property ListModel model_controlMenu: ListModel {
         ListElement { action: 'hydraulic'; status: "OFF"; buttonText: "Hydraulic" }
         ListElement { action: 'embedded'; status: "OFF"; buttonText: "Embedded" }
         ListElement { action: 'back'; buttonText: "Back to start menu" }
@@ -22,7 +22,7 @@ ApplicationWindow {
     ListView {
         id: listView
         anchors.fill: parent
-        model: deviceModel
+        model: model_controlMenu
         delegate: Rectangle {
             width: listView.width
             height: 50
@@ -56,11 +56,11 @@ ApplicationWindow {
     {
         //console.log("form control_menu qml " + device_id + " status: " + status)
         var updatedStatus = status === "online" ? "ON" : "OFF";
-        for (var i = 0; i < deviceModel.count; i++) {
-            var item = deviceModel.get(i);
+        for (var i = 0; i < model_controlMenu.count; i++) {
+            var item = model_controlMenu.get(i);
             if ((device_id === "hydraulic" && item.action === 'hydraulic') ||
             (device_id === "embedded" && item.action === 'embedded')) {
-            deviceModel.setProperty(i, "status", updatedStatus);
+            model_controlMenu.setProperty(i, "status", updatedStatus);
         }
     }
 }
