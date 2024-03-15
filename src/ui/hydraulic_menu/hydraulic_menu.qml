@@ -12,8 +12,8 @@ ApplicationWindow {
     title: "Testaa hydrauliikka"
 
     property ListModel model_hydraulicMenu: ListModel {
-        ListElement { action: "set_cylinder"; buttonText: "Aseta sylinteri"; value: "" }
-        ListElement { action: "set_position"; buttonText: "Aseta asento"; value: "" }
+        ListElement { action: "set_cylinder"; buttonText: "Aseta sylinteri"; value: ""; status: "OFF"; }
+        ListElement { action: "set_position"; buttonText: "Aseta asento"; value: ""; status: "OFF";}
         ListElement { action: "send_command"; buttonText: "Lähetä käsky"}
         ListElement { action: "back"; buttonText: "Takaisin"; value: "" }
     }
@@ -36,6 +36,8 @@ ApplicationWindow {
                 anchors.margins: 10
                 Text { text: buttonText }
                 Text { text: value }
+                Text { text: status; Layout.fillWidth: true; horizontalAlignment: Text.AlignRight; color: status === "ON" ? "green" : "red" }
+
             }
 
             MouseArea {
@@ -58,7 +60,7 @@ ApplicationWindow {
                     }
                     else if (action === "back")
                     {
-                        controller.goBackControlMenuSignal();
+                        controller.goBackControlMenu();
                     }
                 }
             }
@@ -71,7 +73,6 @@ ApplicationWindow {
         height: 200
         modal: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-        parent: hydraulic
 
         Column {
             anchors.centerIn: parent
@@ -98,7 +99,6 @@ ApplicationWindow {
         height: 200
         modal: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-        parent: hydraulic
 
         Column {
             anchors.centerIn: parent
@@ -118,4 +118,23 @@ ApplicationWindow {
             }
         }
     }
+
+    Connections {
+        target: controller
+        function onUpdateStatusSignal(device_id, status)
+        { updatedStatus(device_id, status); }
+        }
+
+        function updatedStatus(device_id, status)
+        {
+            var updatedStatus = status === "online" ? "ON" : "OFF";
+            for (var i = 0; i < model_hydraulicMenu.count; i++) {
+                var item = model_hydraulicMenu.get(i);
+                if ((device_id === "hydraulic" && item.action === 'set_cylinder') ||
+                (device_id === "embedded" && item.action === 'set_position')) {
+                model_hydraulicMenu.setProperty(i, "status", updatedStatus);
+            }
+        }
+    }
+
 }

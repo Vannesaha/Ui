@@ -11,13 +11,9 @@ from src.ui.hydraulic_menu.hydraulic_menu import Hydraulic_Menu
 
 class MainController(QObject):
     # Define signals that will communicate across different parts of the application
-    openControlMenuSignal = Signal()  # Signal to open the control menu
-    openHydraulicMenuSignal = Signal()  # Signal to open the hydraulic menu
-
-    goBackStartMenuSignal = Signal()  # Signal to go back to the start menu
-    goBackControlMenuSignal = Signal()  # Signal to go back to the control menu
-
-    updateStatusSignal = pyqtSignal(str, str)  # Signal to update the status of a device
+    updateStatusSignal = pyqtSignal(
+        str, str
+    )  # Signal to update the status of a devices multple locations
 
     def __init__(self):
         super().__init__()
@@ -28,16 +24,6 @@ class MainController(QObject):
         # Initialize MQTTPublisher here but don't start it yet
         self.mqtt_publisher = MQTTPublisher(self)
         # Assuming MQTTPublisher takes a reference to MainController
-
-        # Connect the signals to the methods
-        self.openControlMenuSignal.connect(self.openControlMenu)
-        self.openHydraulicMenuSignal.connect(
-            self.openHydraulicMenu
-        )  # Connect the signal to the method
-
-        # Connect the signals to the back methods
-        self.goBackStartMenuSignal.connect(self.goBackStartMenu)
-        self.goBackControlMenuSignal.connect(self.goBackControlMenu)
 
     def startApplication(self):
         self.start_menu = Start_Menu(controller=self, engine=self.engine)
@@ -55,18 +41,22 @@ class MainController(QObject):
         self.control_menu.hide()
         self.hydraulic_menu.hide()
 
+    @pyqtSlot()
     def openControlMenu(self):
         self.hideAllWindows()
         self.control_menu.show()
 
+    @pyqtSlot()
     def openHydraulicMenu(self):  # Method to open the hydraulic menu
         self.hideAllWindows()
         self.hydraulic_menu.show()
 
+    @pyqtSlot()
     def goBackStartMenu(self):
         self.hideAllWindows()
         self.start_menu.show()
 
+    @pyqtSlot()
     def goBackControlMenu(self):
         self.hideAllWindows()
         self.control_menu.show()

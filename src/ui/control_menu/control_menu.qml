@@ -49,7 +49,7 @@ ApplicationWindow {
                     }
                     else if (action === "hydraulic")
                     {
-                        controller.openHydraulicMenuSignal();
+                        controller.openHydraulicMenu();
                     }
                     else if (action === "embedded")
                     {
@@ -73,7 +73,7 @@ ApplicationWindow {
                     }
                     else if (action === "back")
                     {
-                        controller.goBackStartMenuSignal();
+                        controller.goBackStartMenu();
                     }
                 }
             }
@@ -82,80 +82,21 @@ ApplicationWindow {
 
     Connections {
         target: controller
-        onUpdateStatusSignal: function(device_id, status) { updatedStatus(device_id, status); }
-    }
+        function onUpdateStatusSignal(device_id, status)
+        { updatedStatus(device_id, status); }
+        }
 
-    function updatedStatus(device_id, status)
-    {
-        //console.log("form control_menu qml " + device_id + " status: " + status)
-        var updatedStatus = status === "online" ? "ON" : "OFF";
-        for (var i = 0; i < model_controlMenu.count; i++) {
-            var item = model_controlMenu.get(i);
-            if ((device_id === "hydraulic" && item.action === 'hydraulic') ||
-            (device_id === "embedded" && item.action === 'embedded')) {
-            model_controlMenu.setProperty(i, "status", updatedStatus);
+        function updatedStatus(device_id, status)
+        {
+            //console.log("form control_menu qml " + device_id + " status: " + status)
+            var updatedStatus = status === "online" ? "ON" : "OFF";
+            for (var i = 0; i < model_controlMenu.count; i++) {
+                var item = model_controlMenu.get(i);
+                if ((device_id === "hydraulic" && item.action === 'hydraulic') ||
+                (device_id === "embedded" && item.action === 'embedded')) {
+                model_controlMenu.setProperty(i, "status", updatedStatus);
+            }
         }
     }
-}
-/* Label {
-id: statusLabel
-text: "Not updated yet"
-}
 
-function updateStatus(device_id, status)
-{
-    // Update the status of the device in your QML UI here.
-    // This is just an example. You need to replace it with your actual code.
-    console.log("Device " + device_id + " status: " + status);
-    statusLabel.text = "Device " + device_id + " status: " + status;
-
-}
-
-function testFunction(device_id, status)
-{
-    statusLabel.text = "Test function called";
-} */
-
-
-/* Component.onCompleted: {
-if (control_menu) { // Check if control_menu is available
-control_menu.statusChecked.connect(updateStatus);
-control_menu.statusChecked.connect(testFunction);
-console.log("control_menu is available");
-
-} else {
-console.log("control_menu is not available");
-}
-} */
-
-/* Connections {
-target: control_menu
-
-function onSignalTest()
-{
-    console.log("Signal received in QML: Device");
-    // Here you can update your UI accordingly
-    // For example, updating a label's text:
-    statusLabel.text = "Device status updated";
-}
-}
-*/
-
-
-
-/* Connections {
-target: gui
-
-function onStatusChecked(device_id, newStatus)
-{
-    var updatedStatus = newStatus === "online" ? "ON" : "OFF";
-    for (var i = 0; i < deviceModel.count; i++) {
-        var item = deviceModel.get(i);
-        if ((device_id === gui.DEVICE_1 && item.action === "Hydraulic") ||
-        (device_id === gui.DEVICE_2 && item.action === "Embedded")) {
-        deviceModel.setProperty(i, "status", updatedStatus);
-    } // Tämä sulje puuttui
-}
-}
-} */
 }

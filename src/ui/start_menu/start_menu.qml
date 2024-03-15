@@ -41,7 +41,7 @@ ApplicationWindow {
                     // This is a simplified way to check which button was clicked
                     if (action === "start")
                     {
-                        controller.openControlMenuSignal() // Assuming you have a method connected to the signal
+                        controller.openControlMenu() // Assuming you have a method connected to the signal
                     }
                     else if (action === "settings")
                     {
