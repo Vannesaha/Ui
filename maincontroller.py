@@ -18,9 +18,6 @@ class MainController(QObject):
     goBackControlMenuSignal = Signal()  # Signal to go back to the control menu
 
     updateStatusSignal = pyqtSignal(str, str)  # Signal to update the status of a device
-    cylinderPositionCommand = pyqtSignal(
-        str, str
-    )  # Signal to send a command to the hydraulic system
 
     def __init__(self):
         super().__init__()
@@ -46,7 +43,7 @@ class MainController(QObject):
         self.start_menu = Start_Menu(controller=self, engine=self.engine)
         self.control_menu = Control_Menu(controller=self, engine=self.engine)
         self.hydraulic_menu = Hydraulic_Menu(
-            controller=self, engine=self.engine
+            controller=self, engine=self.engine, mqtt_publisher=self.mqtt_publisher
         )  # Initialize the Hydraulic_Menu
         self.start_menu.show()
         # Now that the GUI is ready, start the MQTT publisher
@@ -77,8 +74,3 @@ class MainController(QObject):
     # Emit signals functions
     def sendStatusUpdate(self, device_id, status):
         self.updateStatusSignal.emit(device_id, status)
-
-    @pyqtSlot(str, str)  # Decorator to specify the type of the arguments (from QML)
-    def SendCylinderPositionCommandSignal(self, cylinder, position):
-        # print("Emitting send command signal", cylinder, position)
-        self.cylinderPositionCommand.emit(cylinder, position)

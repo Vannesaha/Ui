@@ -53,7 +53,8 @@ ApplicationWindow {
                     {
                         var cylinderValue = JSON.parse(model_hydraulicMenu.get(0).value);
                         var positionValue = JSON.parse(model_hydraulicMenu.get(1).value);
-                        controller.SendCylinderPositionCommandSignal(cylinderValue.cylinder, positionValue.position);
+                        hydraulic_menu.setPositions(cylinderValue.cylinder, positionValue.position);
+
                     }
                     else if (action === "back")
                     {
