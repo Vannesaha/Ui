@@ -23,6 +23,9 @@ class Hydraulic_Menu(QObject):
         if self.root is None:
             sys.exit(-1)
 
+        # connect the signal to the method
+        self.controller.cylinderPositionCommand.connect(self.setPositions)
+
     def get_root_object(self):
         for root in self.engine.rootObjects():
             if root.objectName() == "hydraulic_menu":
@@ -38,6 +41,10 @@ class Hydraulic_Menu(QObject):
     def hide(self):
         if self.root is not None:
             self.root.setProperty("visible", False)
+
+    def setPositions(self, cylinder, position):
+        print(f"Sending command to set cylinder {cylinder} to position {position}")
+        pass
 
     """  def get_cylinder_number():
             while True:

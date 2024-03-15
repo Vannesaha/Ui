@@ -1,6 +1,6 @@
 # maincontroller.py
 
-from PyQt6.QtCore import QObject, pyqtSignal as Signal, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSignal as Signal, pyqtSignal, pyqtSlot
 from PyQt6.QtQml import QQmlApplicationEngine
 
 from src.ui.start_menu.start_menu import Start_Menu
@@ -18,6 +18,9 @@ class MainController(QObject):
     goBackControlMenuSignal = Signal()  # Signal to go back to the control menu
 
     updateStatusSignal = pyqtSignal(str, str)  # Signal to update the status of a device
+    cylinderPositionCommand = pyqtSignal(
+        str, str
+    )  # Signal to send a command to the hydraulic system
 
     def __init__(self):
         super().__init__()
@@ -39,8 +42,6 @@ class MainController(QObject):
         self.goBackStartMenuSignal.connect(self.goBackStartMenu)
         self.goBackControlMenuSignal.connect(self.goBackControlMenu)
 
-        # self.testSignal.connect(self.emitTestSignal)  # Connect the signal to the method
-
     def startApplication(self):
         self.start_menu = Start_Menu(controller=self, engine=self.engine)
         self.control_menu = Control_Menu(controller=self, engine=self.engine)
@@ -51,22 +52,33 @@ class MainController(QObject):
         # Now that the GUI is ready, start the MQTT publisher
         self.mqtt_publisher.run()
 
-    def openControlMenu(self):
+    # Window functions
+    def hideAllWindows(self):
         self.start_menu.hide()
+        self.control_menu.hide()
+        self.hydraulic_menu.hide()
+
+    def openControlMenu(self):
+        self.hideAllWindows()
         self.control_menu.show()
 
     def openHydraulicMenu(self):  # Method to open the hydraulic menu
-        # self.control_menu.hide()
+        self.hideAllWindows()
         self.hydraulic_menu.show()
 
     def goBackStartMenu(self):
-        self.control_menu.hide()
+        self.hideAllWindows()
         self.start_menu.show()
 
     def goBackControlMenu(self):
-        self.hydraulic_menu.hide()  # Hide the hydraulic menu
+        self.hideAllWindows()
         self.control_menu.show()
 
     # Emit signals functions
-    def emitStatusUpdate(self, device_id, status):
+    def sendStatusUpdate(self, device_id, status):
         self.updateStatusSignal.emit(device_id, status)
+
+    @pyqtSlot(str, str)  # Decorator to specify the type of the arguments (from QML)
+    def SendCylinderPositionCommandSignal(self, cylinder, position):
+        # print("Emitting send command signal", cylinder, position)
+        self.cylinderPositionCommand.emit(cylinder, position)

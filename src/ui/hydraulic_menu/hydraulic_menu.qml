@@ -12,9 +12,10 @@ ApplicationWindow {
     title: "Testaa hydrauliikka"
 
     property ListModel model_hydraulicMenu: ListModel {
-        ListElement { action: "set_cylinder"; buttonText: "Aseta sylinteri" }
-        ListElement { action: "set_position"; buttonText: "Aseta asento" }
-        ListElement { action: "back"; buttonText: "Takaisin" }
+        ListElement { action: "set_cylinder"; buttonText: "Aseta sylinteri"; value: "" }
+        ListElement { action: "set_position"; buttonText: "Aseta asento"; value: "" }
+        ListElement { action: "send_command"; buttonText: "Lähetä käsky"}
+        ListElement { action: "back"; buttonText: "Takaisin"; value: "" }
     }
 
     ListView {
@@ -34,6 +35,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 anchors.margins: 10
                 Text { text: buttonText }
+                Text { text: value }
             }
 
             MouseArea {
@@ -41,11 +43,17 @@ ApplicationWindow {
                 onClicked: {
                     if (action === "set_cylinder")
                     {
-                        // Open the dialog to set the cylinder
+                        cylinderDialog.open();
                     }
                     else if (action === "set_position")
                     {
-                        // Open the dialog to set the position
+                        positionDialog.open();
+                    }
+                    else if (action === "send_command")
+                    {
+                        var cylinderValue = JSON.parse(model_hydraulicMenu.get(0).value);
+                        var positionValue = JSON.parse(model_hydraulicMenu.get(1).value);
+                        controller.SendCylinderPositionCommandSignal(cylinderValue.cylinder, positionValue.position);
                     }
                     else if (action === "back")
                     {
@@ -55,48 +63,58 @@ ApplicationWindow {
             }
         }
     }
+
+    Popup {
+        id: cylinderDialog
+        width: 300
+        height: 200
+        modal: true
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        parent: hydraulic
+
+        Column {
+            anchors.centerIn: parent
+
+            TextField {
+                id: cylinderInput
+                width: 200
+                placeholderText: "Enter cylinder value"
+            }
+
+            Button {
+                text: "OK"
+                onClicked: {
+                    model_hydraulicMenu.get(0).value = JSON.stringify({ cylinder: cylinderInput.text });
+                    cylinderDialog.close();
+                }
+            }
+        }
+    }
+
+    Popup {
+        id: positionDialog
+        width: 300
+        height: 200
+        modal: true
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        parent: hydraulic
+
+        Column {
+            anchors.centerIn: parent
+
+            TextField {
+                id: positionInput
+                width: 200
+                placeholderText: "Enter position value"
+            }
+
+            Button {
+                text: "OK"
+                onClicked: {
+                    model_hydraulicMenu.get(1).value = JSON.stringify({ position: positionInput.text });
+                    positionDialog.close();
+                }
+            }
+        }
+    }
 }
-/* import QtQuick 2.15
-import QtQuick.Controls 2.15
-
-Dialog {
-    id: hydraulic
-    objectName: "hydraulic_menu"  // Add this line
-    title: "Set Hydraulic"
-    modal: true
-    visible: true
-    standardButtons: Dialog.Ok | Dialog.Cancel
-
-    signal hydraulicSet(int cylinder, int position)
-
-    Column {
-        spacing: 10
-        Row {
-            Label {
-                text: "Cylinder: "
-            }
-            SpinBox {
-                id: cylinderSpinBox
-                from: 0
-                to: 3
-                stepSize: 1
-            }
-        }
-
-        Row {
-            Label {
-                text: "Position: "
-            }
-            SpinBox {
-                id: positionSpinBox
-                from: 0
-                to: 180
-                stepSize: 1
-            }
-        }
-    }
-
-    onAccepted: {
-        hydraulicSet(cylinderSpinBox.value, positionSpinBox.value)
-    }
-} */

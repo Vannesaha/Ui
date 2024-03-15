@@ -59,7 +59,7 @@ class MQTTPublisher:
             # self.control_menu.emitTestSignal()
 
             # self.controller.emitTestSignal()  # Call the method here with necessary parameters
-            self.controller.emitStatusUpdate(
+            self.controller.sendStatusUpdate(
                 device_id, status
             )  # Call the method here with necessary parameters
 
