@@ -1,18 +1,15 @@
+# MQTT Publisher class
+
 # Import the MQTT client from the Paho library
 import paho.mqtt.client as mqtt
 
 # Import the necessary settings from the config module
-from config.settings import (
-    BROKER,
-    PORT,
-    DEVICE_ID,
-    HYDRAULIC_RESPONSE_TOPIC,
-)
+from config.settings import BROKER, PORT, DEVICE_ID, HYDRAULIC_RESPONSE_TOPIC, DEVICE_1
 
 
 # Define the MQTTPublisher class
 class MQTTPublisher:
-    def __init__(self):
+    def __init__(self, controller):
         # Initialize the MQTT client and set up the connection and message callbacks
         self.client = mqtt.Client(client_id=DEVICE_ID)
         self.client.on_connect = self.on_connect
@@ -20,12 +17,14 @@ class MQTTPublisher:
         # Initialize the connection status to False
         self.connected = False
         self.device_statuses = {}
+        self.DEVICE_1 = DEVICE_1
+        self.controller = controller  # Save a reference to the controller object
 
     def on_connect(self, client, userdata, flags, rc):
         # This method is called when the client successfully connects to the MQTT broker
         if rc == 0:
             print("Connected successfully.")
-            # Set the connection status to True
+            # Set the connection status to Truea
             self.connected = True
             # Subscribe to the status topics and the hydraulic response topic
             client.subscribe("status/#")
@@ -44,11 +43,11 @@ class MQTTPublisher:
         # Check if the message is a response to a command
         if msg.topic == HYDRAULIC_RESPONSE_TOPIC:
             print(f"Received response on {msg.topic}: {payload}")
+            # self.gui.hydraulicResponseReceived.emit(payload)  # Emit the signal here
         elif msg.topic.startswith("status/"):
             device_id = msg.topic.split("/")[1]  # Get the device ID from the topic
-            self.device_statuses[device_id] = payload  # Update the device's status
-            # Handle the response here
-            print(f"Received message on {msg.topic}: {payload}")
+            status = payload
+            self.controller.sendStatusUpdate(device_id, status)
         else:
             print(f"Received message on {msg.topic}: {payload}")
             # Handle other messages here

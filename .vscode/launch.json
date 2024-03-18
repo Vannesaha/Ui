@@ -1,0 +1,29 @@
+{
+    // This is the version of the launch.json file format. Currently, it's always "0.2.0".
+    "version": "0.2.0",
+
+    // This is an array of configuration objects. Each object represents a different way to start a debugging session.
+    "configurations": [
+        {
+            // This is the name of the configuration. It will be shown in the dropdown menu in the Debug view.
+            "name": "Python Debugger: working",
+
+            // This is the type of the debugger to use. "debugpy" is the debugger for Python.
+            "type": "debugpy",
+
+            // This is the request type. "launch" means that VS Code should start a new instance of the program for debugging.
+            "request": "launch",
+
+            // This is the path to the program that you want to debug. "${workspaceFolder}" is a variable that refers to the root folder of your workspace.
+            "program": "${workspaceFolder}/main.py",
+
+            // This determines where the output of the program will be shown. "integratedTerminal" means that the output will be shown in the VS Code terminal.
+            "console": "integratedTerminal",
+
+            // If this is true, the debugger will stop at the first line of the program.
+            "stopOnEntry": true,
+            // allows console.logs in qml debuging
+        },
+        
+    ]
+}
