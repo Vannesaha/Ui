@@ -47,7 +47,9 @@ class MQTTPublisher:
         elif msg.topic.startswith("status/"):
             device_id = msg.topic.split("/")[1]  # Get the device ID from the topic
             status = payload
-            self.controller.sendStatusUpdate(device_id, status)
+            self.controller.sendStatusUpdate(
+                device_id, status
+            )  # send status update to the controller when status is received
         else:
             print(f"Received message on {msg.topic}: {payload}")
             # Handle other messages here
