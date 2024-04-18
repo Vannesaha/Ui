@@ -1,6 +1,42 @@
 # control_menu.py
 
-from PyQt6.QtCore import QUrl, QObject, pyqtSlot as Slot
+import tkinter as tk
+
+
+class ControlMenu:
+    def __init__(self, master, controller):
+        self.controller = controller
+        self.master = master  # Save the master window
+
+        # Create a frame to contain the buttons
+        self.frame = tk.Frame(master)
+        self.frame.pack(fill="both", expand=True)
+
+        # List of button configurations
+        buttons = [
+            {"text": "  1. Hydrauliikka", "command": self.open_hydraulic_menu},
+            {"text": "  2. takaisin", "command": self.controller.back_to_start_menu},
+        ]
+
+        # Create buttons from the configurations
+        self.buttons = []
+        for i, button in enumerate(buttons):
+            btn = tk.Button(
+                self.frame,
+                text=button["text"],
+                command=button["command"],
+                width=20,
+                anchor="w",
+            )
+            btn.grid(row=i, column=0, sticky="w", padx=5, pady=5)
+            self.buttons.append(btn)
+
+    def open_hydraulic_menu(self):
+        print("open hydraulic menu clicked")
+        # Add your logic here
+
+
+""" from PyQt6.QtCore import QUrl, QObject, pyqtSlot as Slot
 
 import sys
 
@@ -56,3 +92,4 @@ class Control_Menu(QObject):
         # If the root object is not None, set its "visible" property to False
         if self.root is not None:
             self.root.setProperty("visible", False)
+ """

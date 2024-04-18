@@ -1,5 +1,41 @@
 # maincontroller.py
 
+import tkinter as tk
+from src.ui.control_menu.control_menu import ControlMenu
+from src.ui.start_menu.start_menu import StartMenu
+
+
+class MainController:
+    def __init__(self):
+        # Create a StartMenu
+        self.start_window = tk.Tk()
+        self.start_window.title("Päävalikko")
+        self.start_window.geometry("640x480")
+        self.start_menu = StartMenu(self.start_window, self)
+
+    def start(self):
+        # Run the Tkinter event loop
+        self.start_window.mainloop()
+
+    def open_control_menu(self):
+        print("Open Control menu button clicked")
+        # Hide the start window
+        self.start_window.withdraw()
+        # Create a ControlMenu
+        control_window = tk.Toplevel()
+        control_window.title("Sahan käyttöönotto")
+        control_window.geometry("640x480")
+        self.control_menu = ControlMenu(control_window, self)  # Save the control menu
+
+    def back_to_start_menu(self):
+        print("Back to start_menu button clicked")
+        # Unhide the start window
+        self.start_window.deiconify()
+        # Hide the control window
+        self.control_menu.master.withdraw()
+
+
+""" 
 # Importing necessary modules
 from PyQt6.QtCore import (
     QObject,
@@ -85,3 +121,4 @@ class MainController(QObject):
         self.updateStatusSignal.emit(
             device_id, status
         )  # Emit the signal with the provided parameters
+ """

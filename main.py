@@ -1,6 +1,15 @@
-# src/main.py
+# main.py
 
-# Importing necessary modules
+from maincontroller import MainController
+
+# Create a MainController
+main_controller = MainController()
+
+# Start the MainController
+main_controller.start()
+
+
+""" # Importing necessary modules
 from PyQt6.QtGui import (
     QGuiApplication,
 )  # QGuiApplication class is a part of PyQt6 library, it manages the GUI application's control flow and main settings
@@ -25,4 +34,4 @@ def main():
 
 # This is a Python standard boilerplate that allows or prevents parts of code from being run when the modules are imported.
 if __name__ == "__main__":
-    main()  # Call the main function
+    main()  # Call the main function """
