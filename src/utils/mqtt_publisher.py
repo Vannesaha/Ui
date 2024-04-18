@@ -16,7 +16,6 @@ class MQTTPublisher:
         self.client.on_message = self.on_message
         # Initialize the connection status to False
         self.connected = False
-        self.device_statuses = {}
         self.DEVICE_1 = DEVICE_1
         self.controller = controller  # Save a reference to the controller object
 
