@@ -1,7 +1,6 @@
 # maincontroller.py
 
 import tkinter as tk
-import tkinter.messagebox as messagebox
 
 from src.ui.control_menu import ControlMenu
 from src.ui.start_menu import StartMenu
@@ -53,10 +52,7 @@ class MainController:
 
         # Check if the hydraulic device is offline
         if self.device_statuses.get("hydraulic") == "offline":
-            messagebox.showerror(
-                "Error", "Hydraulic device is offline. Cannot open hydraulic menu."
-            )
-            return
+            raise ValueError("Hydraulic device is offline. Cannot open hydraulic menu.")
 
         # Hide the control window
         self.control_menu.master.withdraw()
@@ -64,7 +60,9 @@ class MainController:
         hydraulic_window = tk.Toplevel()
         hydraulic_window.title("Testaa hydrauliikka")
         hydraulic_window.geometry("640x480")
-        self.hydraulic_menu = HydraulicMenu(hydraulic_window, self)
+        self.hydraulic_menu = HydraulicMenu(
+            hydraulic_window, self, self.device_statuses
+        )
 
         # Update the status in the hydraulic menu
         if "hydraulic" in self.device_statuses:

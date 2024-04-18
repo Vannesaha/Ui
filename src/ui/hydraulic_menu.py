@@ -1,12 +1,15 @@
 # hydraulic_menu.py
 
 import tkinter as tk
+from tkinter import simpledialog
+from config.settings import DEVICE_1
 
 
 class HydraulicMenu:
-    def __init__(self, master, controller):
+    def __init__(self, master, controller, device_statuses):
         self.controller = controller
         self.master = master  # Save the master window
+        self.device_statuses = device_statuses  # Save the device statuses
 
         # Create a frame to contain the buttons
         self.frame = tk.Frame(master)
@@ -15,65 +18,72 @@ class HydraulicMenu:
         # List of button configurations
         buttons = [
             {
-                "text": "  1. Aseta sylinteri",
-                "command": self.set_cylinder,
-            },  # no action
-            {"text": "  2. Aseta asento", "command": self.set_position},  # no action
-            {"text": "  3. Lähetä käsky", "command": self.send_command},  # no action
+                "text": "  1. Aseta sylinteri 0-3",
+                "input": True,
+            },
+            {
+                "text": "  2. Aseta sylinterin paikka 0-180",
+                "input": True,
+            },
+            {"text": "  3. Send Command", "command": self.send_command},
             {"text": "  4. Back", "command": self.controller.back_to_control_menu},
         ]
 
-        # Create buttons from the configurations
+        # Create buttons and input boxes from the configurations
         self.buttons = []
         for i, button in enumerate(buttons):
-            btn = tk.Button(
-                self.frame,
-                text=button["text"],
-                command=button["command"],
-                width=20,
-                anchor="w",
-            )
-            btn.grid(row=i, column=0, sticky="w", padx=5, pady=5)
-            self.buttons.append(btn)
+            if button.get("input"):
+                label = tk.Label(self.frame, text=button["text"])
+                label.grid(row=i, column=0, sticky="w", padx=5, pady=5)
+                entry = tk.Entry(self.frame)
+                entry.grid(row=i, column=1, sticky="w", padx=5, pady=5)
+                if button["text"] == "  1. Aseta sylinteri 0-3":
+                    self.cylinder_entry = entry
+                else:
+                    self.position_entry = entry
+            else:
+                btn = tk.Button(
+                    self.frame,
+                    text=button["text"],
+                    command=button["command"],
+                    width=20,
+                    anchor="w",
+                )
+                btn.grid(row=i, column=0, sticky="w", padx=5, pady=5)
+                self.buttons.append(btn)
 
         # Add hydraulic and embedded device statuses
         self.hyd_status = tk.Label(self.frame, text="Hydraulic Status: ")
-        self.hyd_status.grid(row=0, column=1, sticky="w", padx=5, pady=5)
+        self.hyd_status.grid(row=len(buttons), column=0, sticky="w", padx=5, pady=5)
 
         self.embed_status = tk.Label(self.frame, text="Embedded Device Status: ")
-        self.embed_status.grid(row=1, column=1, sticky="w", padx=5, pady=5)
-
-    def set_cylinder(self):
-        print("Set cylinder clicked")
-
-    def set_position(self):
-        print("Set positions clicked")
-
-        # Create a new top-level window
-        # self.positions_window = tk.Toplevel(self.master)
-
-        # # Create cylinder label and entry
-        # self.cylinder_label = tk.Label(self.positions_window, text="Enter cylinder value")
-        # self.cylinder_label.pack()
-        # self.cylinder_entry = tk.Entry(self.positions_window)
-        # self.cylinder_entry.pack()
-
-        # # Create position label and entry
-        # self.position_label = tk.Label(self.positions_window, text="Enter position value")
-        # self.position_label.pack()
-        # self.position_entry = tk.Entry(self.positions_window)
-        # self.position_entry.pack()
-
-        # # Create submit button
-        # self.submit_button = tk.Button(self.positions_window, text="OK", command=self.send_command)
-        # self.submit_button.pack()
+        self.embed_status.grid(
+            row=len(buttons) + 1, column=0, sticky="w", padx=5, pady=5
+        )
 
     def send_command(self):
-        print("Send command clicked")
 
+        # Check if the hydraulic device is offline
+        if self.device_statuses.get("hydraulic") == "offline":
+            raise ValueError("Hydraulic device is offline. Cannot send command.")
 
-#         cylinder = self.cylinder_entry.get()
-#         position = self.position_entry.get()
-#         print(f"Sending command to set cylinder {cylinder} to position {position}")
-#         # Add your logic here to send the command
-#         self.positions_window.destroy()  # Close the positions window
+        try:
+            cylinder = int(self.cylinder_entry.get())
+            position = int(self.position_entry.get())
+        except ValueError:
+            print("Please enter valid integers for cylinder and position.")
+            return
+
+        if not 0 <= cylinder <= 3:
+            print("Cylinder value must be between 0 and 3.")
+            return
+
+        if not 0 <= position <= 180:
+            print("Position value must be between 0 and 180.")
+            return
+
+        topic = f"device/{DEVICE_1}/{cylinder}"
+        command = f"set_hydraulic:{position}"
+        self.controller.mqtt_publisher.publish_command(
+            topic, command
+        )  # Publish the command
