@@ -16,14 +16,13 @@ class MQTTPublisher:
         self.client.on_message = self.on_message
         # Initialize the connection status to False
         self.connected = False
-        self.device_statuses = {}
         self.DEVICE_1 = DEVICE_1
         self.controller = controller  # Save a reference to the controller object
 
     def on_connect(self, client, userdata, flags, rc):
         # This method is called when the client successfully connects to the MQTT broker
         if rc == 0:
-            print("Connected successfully.")
+            print(f"Connected successfully to broker: {BROKER}.")
             # Set the connection status to Truea
             self.connected = True
             # Subscribe to the status topics and the hydraulic response topic
