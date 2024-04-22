@@ -62,9 +62,8 @@ class HydraulicMenu:
         )
 
     def send_command(self):
-
         # Check if the hydraulic device is offline
-        if self.device_statuses.get("hydraulic") == "offline":
+        if self.device_statuses.get("hydraulic") != "online":
             raise ValueError("Hydraulic device is offline. Cannot send command.")
 
         try:
@@ -82,8 +81,6 @@ class HydraulicMenu:
             print("Position value must be between 0 and 180.")
             return
 
-        topic = f"device/{DEVICE_1}/{cylinder}"
-        command = f"set_hydraulic:{position}"
-        self.controller.mqtt_publisher.publish_command(
-            topic, command
-        )  # Publish the command
+        topic = f"device/{DEVICE_1}/set_cylinder_position"
+        message = f"set_cylinder:{cylinder},set_position:{position}"
+        self.controller.mqtt_publisher.publish_command(topic, message)
