@@ -50,10 +50,14 @@ class MainController:
         self.status_frame.grid(row=0, column=1, sticky="nsew")
         self.other_frame.grid(row=1, column=1, sticky="nsew")
 
-        # Create the start menu in the menu frame
+        # Create the start menu and control menu in the menu frame
         self.start_menu = StartMenu(self.menu_frame, self)
-        self.start_menu.pack(fill="both", expand=True)
+        self.control_menu = ControlMenu(self.menu_frame, self)
+        self.control_menu.hide()
 
+        # Initially, only the start menu is visible
+        self.start_menu.pack(fill="both", expand=True)
+        self.control_menu.hide()  # Hide the control menu
         # Initialize and run the MQTT publisher
         self.mqtt_publisher = MQTTPublisher(self)
         self.mqtt_publisher.run()
@@ -98,21 +102,10 @@ class MainController:
 
     def open_control_menu(self):
         print("Control menu button clicked")
-        # Hide the start menu
+        # Hide the start menu and show the control menu
         self.start_menu.pack_forget()
-        # Create a ControlMenu
-        self.control_menu = ControlMenu(self.start_window, self)
-        self.control_menu.pack(fill="both", expand=True)
-
-        # Update the status in the control menu
-        if "hydraulic" in self.device_statuses:
-            update_status(
-                self.control_menu.hyd_status, self.device_statuses["hydraulic"]
-            )
-        if "embedded" in self.device_statuses:
-            update_status(
-                self.control_menu.embed_status, self.device_statuses["embedded"]
-            )
+        self.control_menu.show()
+        self.root.update_idletasks()  # Varmista ikkunan päivitys
 
     def open_hydraulic_menu(self):
         print("Test hydraulics button clicked")
@@ -131,22 +124,13 @@ class MainController:
             hydraulic_window, self, self.device_statuses
         )
 
-        # Update the status in the hydraulic menu
-        if "hydraulic" in self.device_statuses:
-            update_status(
-                self.hydraulic_menu.hyd_status, self.device_statuses["hydraulic"]
-            )
-        if "embedded" in self.device_statuses:
-            update_status(
-                self.hydraulic_menu.embed_status, self.device_statuses["embedded"]
-            )
-
     def back_to_start_menu(self):
         print("Back to start_menu button clicked")
-        # Unhide the start window
-        self.start_window.deiconify()
-        # Hide the control window
-        self.control_menu.master.withdraw()
+        # Hide the control menu and show the start menu
+        self.control_menu.hide()
+        self.start_menu.pack(fill="both", expand=True)  # Show the start menu again
+        self.start_menu.lift()  # Bring start_menu to the front
+        self.root.update_idletasks()  # Varmista ikkunan päivitys
 
     def back_to_control_menu(self):
         print("Back to control_menu button clicked")

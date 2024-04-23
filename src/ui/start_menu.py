@@ -37,6 +37,16 @@ class StartMenu(tk.Frame):
             btn.grid(row=i, column=0, sticky="w", padx=5, pady=5)
             self.buttons.append(btn)
 
+    def show(self):
+        print("StartMenu show method called")  # Debug print statement
+        self.pack(fill="both", expand=True)  # Show the StartMenu frame itself
+        print(
+            "StartMenu elements:", self.buttons
+        )  # Debug print statement to check the elements of the start menu
+
+    def hide(self):
+        self.pack_forget()
+
     def settings_clicked(self):
         print("settings clicked in start menu")
         # Add your start action logic here

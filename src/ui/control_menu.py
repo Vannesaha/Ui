@@ -4,12 +4,9 @@ import tkinter as tk
 
 
 class ControlMenu:
-    def __init__(self, master, controller):
+    def __init__(self, parent, controller):
         self.controller = controller
-        self.master = master  # Save the master window
-
-        # Create a frame to contain the buttons
-        self.frame = tk.Frame(master)
+        self.frame = tk.Frame(parent)  # Define self.frame here
         self.frame.pack(fill="both", expand=True)
 
         # List of button configurations
@@ -59,12 +56,14 @@ class ControlMenu:
             btn.grid(row=i, column=0, sticky="w", padx=5, pady=5)
             self.buttons.append(btn)
 
-        # Add hydraulic and embedded device statuses
-        self.hyd_status = tk.Label(self.frame, text="Hydraulic Status: ")
-        self.hyd_status.grid(row=0, column=1, sticky="w", padx=5, pady=5)
+    def show(self):
+        self.frame.pack(fill="both", expand=True)
 
-        self.embed_status = tk.Label(self.frame, text="Embedded Device Status: ")
-        self.embed_status.grid(row=1, column=1, sticky="w", padx=5, pady=5)
+    def hide(self):
+        self.frame.pack_forget()  # Piilota ControlMenu-kehys
+
+    def get_main_widget(self):
+        return self.main_frame
 
     def test_connection(self):
         print("Test connection button clicked")
