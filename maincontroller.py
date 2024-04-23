@@ -53,11 +53,13 @@ class MainController:
         # Create the start menu and control menu in the menu frame
         self.start_menu = StartMenu(self.menu_frame, self)
         self.control_menu = ControlMenu(self.menu_frame, self)
-        self.control_menu.hide()
+        self.hydraulic_menu = HydraulicMenu(self.menu_frame, self)
 
         # Initially, only the start menu is visible
         self.start_menu.pack(fill="both", expand=True)
         self.control_menu.hide()  # Hide the control menu
+        self.hydraulic_menu.hide()  # Hide the hydraulic menu
+
         # Initialize and run the MQTT publisher
         self.mqtt_publisher = MQTTPublisher(self)
         self.mqtt_publisher.run()
@@ -103,7 +105,7 @@ class MainController:
     def open_control_menu(self):
         print("Control menu button clicked")
         # Hide the start menu and show the control menu
-        self.start_menu.pack_forget()
+        self.start_menu.hide()
         self.control_menu.show()
         self.root.update_idletasks()  # Varmista ikkunan päivitys
 
@@ -114,30 +116,24 @@ class MainController:
         if self.device_statuses.get("hydraulic") == "offline":
             raise ValueError("Hydraulic device is offline. Cannot open hydraulic menu.")
 
-        # Hide the control window
-        self.control_menu.master.withdraw()
-        # Create a HydraulicMenu
-        hydraulic_window = tk.Toplevel()
-        hydraulic_window.title("Testaa hydrauliikka")
-        self.set_window_size(hydraulic_window)
-        self.hydraulic_menu = HydraulicMenu(
-            hydraulic_window, self, self.device_statuses
-        )
+        # Hide the control menu and show the hydraulic menu
+        self.control_menu.hide()
+        self.hydraulic_menu.show()
+        self.root.update_idletasks()  # Varmista ikkunan päivitys
 
     def back_to_start_menu(self):
         print("Back to start_menu button clicked")
         # Hide the control menu and show the start menu
         self.control_menu.hide()
-        self.start_menu.pack(fill="both", expand=True)  # Show the start menu again
-        self.start_menu.lift()  # Bring start_menu to the front
+        self.start_menu.show()  # Show the start menu again
         self.root.update_idletasks()  # Varmista ikkunan päivitys
 
     def back_to_control_menu(self):
         print("Back to control_menu button clicked")
-        # Unhide the control window
-        self.control_menu.master.deiconify()
-        # Hide the hydraulic window
-        self.hydraulic_menu.master.withdraw()
+        # Hide the hydraulic menu and show the control menu
+        self.hydraulic_menu.hide()
+        self.control_menu.show()
+        self.root.update_idletasks()
 
     # Method to emit the updateStatusSignal
     def sendStatusUpdate(self, device_id, status):

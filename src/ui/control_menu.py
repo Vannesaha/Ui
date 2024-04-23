@@ -1,13 +1,11 @@
 # control_menu.py
-
 import tkinter as tk
 
 
-class ControlMenu:
+class ControlMenu(tk.Frame):
     def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
         self.controller = controller
-        self.frame = tk.Frame(parent)  # Define self.frame here
-        self.frame.pack(fill="both", expand=True)
 
         # List of button configurations
         buttons = [
@@ -45,7 +43,7 @@ class ControlMenu:
         self.buttons = []
         for i, button in enumerate(buttons):
             btn = tk.Button(
-                self.frame,
+                self,
                 text=button["text"],
                 command=button.get(
                     "command", None
@@ -57,10 +55,10 @@ class ControlMenu:
             self.buttons.append(btn)
 
     def show(self):
-        self.frame.pack(fill="both", expand=True)
+        self.pack(fill="both", expand=True)
 
     def hide(self):
-        self.frame.pack_forget()  # Piilota ControlMenu-kehys
+        self.pack_forget()  # Piilota ControlMenu-kehys
 
     def get_main_widget(self):
         return self.main_frame

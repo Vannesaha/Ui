@@ -8,10 +8,6 @@ class StartMenu(tk.Frame):
         tk.Frame.__init__(self, master)
         self.controller = controller
 
-        # Create a frame to contain the buttons and statuses
-        self.frame = tk.Frame(self)
-        self.frame.pack(fill="both", expand=True)
-
         # List of button configurations
         buttons = [
             {
@@ -28,7 +24,7 @@ class StartMenu(tk.Frame):
         self.buttons = []
         for i, button in enumerate(buttons):
             btn = tk.Button(
-                self.frame,
+                self,
                 text=button["text"],
                 command=button["command"],
                 width=20,

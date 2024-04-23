@@ -5,15 +5,10 @@ from tkinter import simpledialog
 from config.settings import DEVICE_1
 
 
-class HydraulicMenu:
-    def __init__(self, master, controller, device_statuses):
+class HydraulicMenu(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
         self.controller = controller
-        self.master = master  # Save the master window
-        self.device_statuses = device_statuses  # Save the device statuses
-
-        # Create a frame to contain the buttons
-        self.frame = tk.Frame(master)
-        self.frame.pack(fill="both", expand=True)
 
         # List of button configurations
         buttons = [
@@ -33,9 +28,9 @@ class HydraulicMenu:
         self.buttons = []
         for i, button in enumerate(buttons):
             if button.get("input"):
-                label = tk.Label(self.frame, text=button["text"])
+                label = tk.Label(self, text=button["text"])
                 label.grid(row=i, column=0, sticky="w", padx=5, pady=5)
-                entry = tk.Entry(self.frame)
+                entry = tk.Entry(self)
                 entry.grid(row=i, column=1, sticky="w", padx=5, pady=5)
                 if button["text"] == "  1. Aseta sylinteri 0-3":
                     self.cylinder_entry = entry
@@ -43,7 +38,7 @@ class HydraulicMenu:
                     self.position_entry = entry
             else:
                 btn = tk.Button(
-                    self.frame,
+                    self,
                     text=button["text"],
                     command=button["command"],
                     width=20,
@@ -53,10 +48,10 @@ class HydraulicMenu:
                 self.buttons.append(btn)
 
         # Add hydraulic and embedded device statuses
-        self.hyd_status = tk.Label(self.frame, text="Hydraulic Status: ")
+        self.hyd_status = tk.Label(self, text="Hydraulic Status: ")
         self.hyd_status.grid(row=len(buttons), column=0, sticky="w", padx=5, pady=5)
 
-        self.embed_status = tk.Label(self.frame, text="Embedded Device Status: ")
+        self.embed_status = tk.Label(self, text="Embedded Device Status: ")
         self.embed_status.grid(
             row=len(buttons) + 1, column=0, sticky="w", padx=5, pady=5
         )
@@ -84,3 +79,9 @@ class HydraulicMenu:
         topic = f"device/{DEVICE_1}/set_cylinder_position"
         message = f"set_cylinder:{cylinder},set_position:{position}"
         self.controller.mqtt_publisher.publish_command(topic, message)
+
+    def show(self):
+        self.pack(fill="both", expand=True)
+
+    def hide(self):
+        self.pack_forget()  # Piilota ControlMenu-kehys
