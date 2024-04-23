@@ -1,6 +1,7 @@
 # maincontroller.py
 
 import tkinter as tk
+import platform
 
 from src.ui.control_menu import ControlMenu
 from src.ui.start_menu import StartMenu
@@ -14,7 +15,7 @@ class MainController:
         # Create a StartMenu
         self.start_window = tk.Tk()
         self.start_window.title("Päävalikko")
-        self.start_window.geometry("640x480")
+        self.set_window_size(self.start_window)
         self.start_menu = StartMenu(self.start_window, self)
 
         # Initialize and run the MQTT publisher
@@ -27,6 +28,24 @@ class MainController:
         # Run the Tkinter event loop
         self.start_window.mainloop()
 
+    def set_window_size(self, window):
+        # Get the screen size
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+
+        # Set the maximum size for your application
+        max_width = 1024  # Replace with your maximum width
+        max_height = 600  # Replace with your maximum height
+        # max_width = 800  # Replace with your maximum width
+        # max_height = 480  # Replace with your maximum height
+
+        # If the screen size is smaller than the maximum size, set the window size to the screen size
+        if screen_width < max_width and screen_height < max_height:
+            window.geometry(f"{screen_width}x{screen_height}")
+        else:
+            # If the screen size is larger than the maximum size, set the window size to the maximum size
+            window.geometry(f"{max_width}x{max_height}")
+
     def open_control_menu(self):
         print("Control menu button clicked")
         # Hide the start window
@@ -34,7 +53,7 @@ class MainController:
         # Create a ControlMenu
         control_window = tk.Toplevel()
         control_window.title("Control Menu")
-        control_window.geometry("640x480")
+        self.set_window_size(control_window)
         self.control_menu = ControlMenu(control_window, self)
 
         # Update the status in the control menu
@@ -59,7 +78,7 @@ class MainController:
         # Create a HydraulicMenu
         hydraulic_window = tk.Toplevel()
         hydraulic_window.title("Testaa hydrauliikka")
-        hydraulic_window.geometry("640x480")
+        self.set_window_size(hydraulic_window)
         self.hydraulic_menu = HydraulicMenu(
             hydraulic_window, self, self.device_statuses
         )
