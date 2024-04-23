@@ -24,17 +24,15 @@ class MainController:
         self.status_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
         self.other_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
 
-        # Create a title label for the menu_frame
+        # Create a title label for the frames
         menu_frame_title = tk.Label(
             self.menu_frame, text="Menu Frame", font=("Arial", 16)
         )
         menu_frame_title.pack()
-        # Create a title label for the status_frame
         status_frame_title = tk.Label(
             self.status_frame, text="Status Frame", font=("Arial", 16)
         )
         status_frame_title.pack()
-        # Create a title label for the other_frame
         other_frame_title = tk.Label(
             self.other_frame, text="Other Frame", font=("Arial", 16)
         )
