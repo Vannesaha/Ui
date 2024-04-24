@@ -3,40 +3,47 @@
 import tkinter as tk
 import platform
 
-from src.ui.control_menu import ControlMenu
-from src.ui.start_menu import StartMenu
-from src.ui.hydraulic_menu import HydraulicMenu
+from src.menus.control_menu import ControlMenu
+from src.menus.start_menu import StartMenu
+from src.menus.hydraulic_menu import HydraulicMenu
 from src.utils.mqtt_publisher import MQTTPublisher  # Import the MQTTPublisher class
 from src.utils.update_status import update_status  # Import the update_status function
+from src.utils.window_utils import set_window_size  # Import the set_window_size
+from src.menus.button_manager import ButtonManager
+
+
+ROOT_TITLE = "Vannesaha"
+MENU_FRAME_TITLE = "Valikko"
+STATUS_FRAME_TITLE = "Laitteiden tila"
+OTHER_FRAME_TITLE = "Navigointi"
+
+# Define a dictionary of status labels and their corresponding texts
+STATUS_LABELS = {
+    "hydraulic": "Hydraulic Status: ",
+    "embedded": "Embedded Device Status: ",
+    # Add more labels here
+}  # status comes from the MQTT message
+
+EXAMPLE_BUTTON_1_TEXT = "Button 1"
+EXAMPLE_BUTTON_2_TEXT = "Button 2"
+EXAMPLE_BUTTON_3_TEXT = "Button 3"
+EXAMPLE_BUTTON_4_TEXT = "Button 4"
+EXAMPLE_BUTTON_5_TEXT = "Button 5"
 
 
 class MainController:
     def __init__(self):
         # Create the root window
         self.root = tk.Tk()
-        self.root.title("Vannesaha")
+        self.root.title(ROOT_TITLE)
 
         # Set the window size
-        self.set_window_size(self.root)
+        set_window_size(self.root)
 
         # Create frames for menu, status, and other
-        self.menu_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.status_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.other_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
-
-        # Create a title label for the frames
-        menu_frame_title = tk.Label(
-            self.menu_frame, text="Menu Frame", font=("Arial", 16)
-        )
-        menu_frame_title.pack()
-        status_frame_title = tk.Label(
-            self.status_frame, text="Status Frame", font=("Arial", 16)
-        )
-        status_frame_title.pack()
-        other_frame_title = tk.Label(
-            self.other_frame, text="Other Frame", font=("Arial", 16)
-        )
-        other_frame_title.pack()
+        self.menu_frame = self.create_menu_frame()
+        self.status_frame = self.create_status_frame()
+        self.other_frame = self.create_other_frame()
 
         # Grid configuration
         self.root.grid_rowconfigure(0, weight=1)
@@ -64,83 +71,134 @@ class MainController:
 
         self.device_statuses = {}  # Add a dictionary to store device statuses
 
-        # Add hydraulic and embedded device statuses
-        self.hyd_status = tk.Label(self.status_frame, text="Hydraulic Status: ")
-        self.hyd_status.pack()
-
-        self.embed_status = tk.Label(self.status_frame, text="Embedded Device Status: ")
-        self.embed_status.pack()
-
     def start(self):
         # Run the Tkinter event loop
         self.root.mainloop()
 
-    def set_window_size(self, window):
-        # Get the screen size
-        screen_width = window.winfo_screenwidth()
-        screen_height = window.winfo_screenheight()
-
-        # Set the maximum size for your application
-        max_width = 1024  # Replace with your maximum width
-        max_height = 600  # Replace with your maximum height
-        # max_width = 800  # Replace with your maximum width
-        # max_height = 480  # Replace with your maximum height
-
-        # If the screen size is smaller than the maximum size, set the window size to the screen size
-        if screen_width < max_width and screen_height < max_height:
-            window.geometry(f"{screen_width}x{screen_height}")
-        else:
-            # If the screen size is larger than the maximum size, set the window size to the maximum size
-            window.geometry(f"{max_width}x{max_height}")
-
-    def update_status_frame(self, device_id, status):
-        # Create a label for the status_frame
-        status_label = tk.Label(
-            self.status_frame, text=f"{device_id}: {status}", font=("Arial", 16)
-        )
-        status_label.pack()
+    # Add a method to switch between menus
+    def switch_menu(self, menu_to_hide, menu_to_show):
+        menu_to_hide.hide()
+        menu_to_show.show()  # Show the new menu
+        self.root.update_idletasks()  # Update the window to show the new menu
 
     def open_control_menu(self):
         print("Control menu button clicked")
-        # Hide the start menu and show the control menu
-        self.start_menu.hide()
-        self.control_menu.show()
-        self.root.update_idletasks()  # Varmista ikkunan päivitys
+        self.switch_menu(self.start_menu, self.control_menu)
 
     def open_hydraulic_menu(self):
         print("Test hydraulics button clicked")
 
         # Check if the hydraulic device is offline
-        if self.device_statuses.get("hydraulic") == "offline":
-            raise ValueError("Hydraulic device is offline. Cannot open hydraulic menu.")
+        # if self.device_statuses.get("hydraulic") != "online":
+        #  raise ValueError("Hydraulic device is offline. Cannot open hydraulic menu.")
 
-        # Hide the control menu and show the hydraulic menu
-        self.control_menu.hide()
-        self.hydraulic_menu.show()
-        self.root.update_idletasks()  # Varmista ikkunan päivitys
+        self.switch_menu(self.control_menu, self.hydraulic_menu)
 
     def back_to_start_menu(self):
         print("Back to start_menu button clicked")
-        # Hide the control menu and show the start menu
-        self.control_menu.hide()
-        self.start_menu.show()  # Show the start menu again
-        self.root.update_idletasks()  # Varmista ikkunan päivitys
+        self.switch_menu(self.control_menu, self.start_menu)
 
     def back_to_control_menu(self):
         print("Back to control_menu button clicked")
-        # Hide the hydraulic menu and show the control menu
-        self.hydraulic_menu.hide()
-        self.control_menu.show()
-        self.root.update_idletasks()
+        self.switch_menu(self.hydraulic_menu, self.control_menu)
 
-    # Method to emit the updateStatusSignal
+    def create_menu_frame(self):
+        """Create the menu frame and its components."""
+        menu_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
+
+        # Create a title label for the frame
+        menu_frame_title = tk.Label(
+            menu_frame, text=MENU_FRAME_TITLE, font=("Arial", 16)
+        )
+        menu_frame_title.pack()
+
+        return menu_frame  # Return the menu_frame object
+
+    def create_status_frame(self):
+        """Create the status frame and its components."""
+        status_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
+
+        # Create a title label for the frame
+        status_frame_title = tk.Label(
+            status_frame, text=STATUS_FRAME_TITLE, font=("Arial", 16)
+        )
+        status_frame_title.pack()
+
+        # Create labels and map device IDs to status labels
+        self.device_labels = {}
+        for device_id, label_text in STATUS_LABELS.items():
+            label = tk.Label(status_frame, text=label_text)
+            label.pack()
+            self.device_labels[device_id] = label
+
+        return status_frame  # Return the status frame
+
     def sendStatusUpdate(self, device_id, status):
         self.device_statuses[device_id] = status  # Update the status in the dictionary
 
         # Update the status in the status frame
-        if device_id == "hydraulic":
-            update_status(self.hyd_status, status)
-        elif device_id == "embedded":
-            update_status(self.embed_status, status)
+        label = self.device_labels.get(device_id)
+        if label is not None:
+            update_status(
+                label, status
+            )  # Update the status label with update_status function
 
         print(device_id, status)  # Emit the signal with the provided parameters
+
+    def create_other_frame(self):
+        """Create the other frame and its components."""
+        other_frame = tk.Frame(self.root, borderwidth=2, relief="solid")
+
+        # Create a title for the other_frame
+        other_frame_title = tk.Label(other_frame, text=OTHER_FRAME_TITLE)
+        other_frame_title.pack(side=tk.TOP)
+
+        # Create a ButtonManager for the other_frame
+        self.button_manager = ButtonManager(other_frame)
+
+        # Create a button in the other_frame
+        example_button1 = self.button_manager.create_button(
+            EXAMPLE_BUTTON_1_TEXT, self.example_button_command1
+        )
+        example_button1.pack(side=tk.LEFT)
+
+        # Create another button in the other_frame
+        example_button2 = self.button_manager.create_button(
+            EXAMPLE_BUTTON_2_TEXT, self.example_button_command2
+        )
+        example_button2.pack(side=tk.LEFT)
+
+        # Create a button in the other_frame
+        example_button3 = self.button_manager.create_button(
+            EXAMPLE_BUTTON_3_TEXT, self.example_button_command1
+        )
+        example_button3.pack(side=tk.LEFT)
+
+        # Create another button in the other_frame
+        example_button4 = self.button_manager.create_button(
+            EXAMPLE_BUTTON_4_TEXT, self.example_button_command2
+        )
+        example_button4.pack(side=tk.LEFT)
+
+        # Create another button in the other_frame
+        example_button5 = self.button_manager.create_button(
+            EXAMPLE_BUTTON_5_TEXT, self.example_button_command2
+        )
+        example_button5.pack(side=tk.LEFT)
+
+        return other_frame
+
+    def example_button_command1(self):
+        print("Example button 1 was clicked!")
+
+    def example_button_command2(self):
+        print("Example button 2 was clicked!")
+
+    def example_button_command3(self):
+        print("Example button 3 was clicked!")
+
+    def example_button_command4(self):
+        print("Example button 4 was clicked!")
+
+    def example_button_command5(self):
+        print("Example button 5 was clicked!")
