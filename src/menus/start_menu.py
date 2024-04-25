@@ -3,8 +3,8 @@ import tkinter as tk
 
 # Define a dictionary to hold all the text
 TEXTS = {
-    "start": "  1. Aloita",
-    "settings": "  2. Asetukset",
+    "start": "1. Aloita",
+    "settings": "2. Asetukset",
 }
 
 

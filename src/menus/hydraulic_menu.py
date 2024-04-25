@@ -16,10 +16,10 @@ class HydraulicMenu(tk.Frame):
     def create_widgets(self):
         # Create the widgets for the HydraulicMenu
         buttons = [
-            {"text": "  1. Aseta sylinteri 0-3", "input": True},
-            {"text": "  2. Aseta sylinterin paikka 0-180", "input": True},
-            {"text": "  3. Send Command", "command": self.send_command},
-            {"text": "  4. Back", "command": self.controller.back_to_control_menu},
+            {"text": "1. Aseta sylinteri 0-3", "input": True},
+            {"text": "2. Aseta sylinterin paikka 0-180", "input": True},
+            {"text": "3. Send Command", "command": self.send_command},
+            {"text": "4. Back", "command": self.controller.back_to_control_menu},
         ]
 
         for i, button in enumerate(buttons):
@@ -31,9 +31,9 @@ class HydraulicMenu(tk.Frame):
     def create_input_field(self, i, button):
         # Create an input field with a label
         label = tk.Label(self, text=button["text"])
-        label.grid(row=i, column=0, sticky="w", padx=5, pady=5)
+        label.grid(row=i, column=0, sticky="w", padx=10, pady=5)
         entry = tk.Entry(self)
-        entry.grid(row=i, column=1, sticky="w", padx=5, pady=5)
+        entry.grid(row=i, column=1, sticky="w", padx=10, pady=5)
         if button["text"] == "  1. Aseta sylinteri 0-3":
             self.cylinder_entry = entry
         else:
@@ -47,6 +47,7 @@ class HydraulicMenu(tk.Frame):
             command=button["command"],
             width=20,
             anchor="w",
+            padx=10,
         )
         btn.grid(row=i, column=0, sticky="nsew", padx=5, pady=5)
         self.grid_columnconfigure(0, weight=1)  # Make the button fill the column
