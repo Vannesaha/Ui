@@ -30,7 +30,7 @@ class StartMenu(tk.Frame):
             },
         ]
 
-        for i, button in enumerate(buttons):
+        for i, button in enumerate(buttons, 1):
             btn = tk.Button(
                 self,
                 text=button["text"],
@@ -39,9 +39,14 @@ class StartMenu(tk.Frame):
                 anchor="w",
                 padx=10,
             )
-            btn.grid(row=i, column=0, sticky="nsew", padx=5, pady=5)
+            btn.grid(row=i - 1, column=0, sticky="nsew", padx=5, pady=5)
             self.grid_columnconfigure(0, weight=1)
             self.buttons.append(btn)
+
+            # Bind number keys to corresponding actions
+            self.bind_all(str(i), lambda event, cmd=button["command"]: cmd())
+
+    # Rest of the code...
 
     def show(self):
         # Show the StartMenu frame itself

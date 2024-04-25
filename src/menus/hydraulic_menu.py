@@ -44,13 +44,12 @@ class HydraulicMenu(tk.Frame):
         btn = tk.Button(
             self,
             text=button["text"],
-            command=button.get(
-                "command", None
-            ),  # If the command key is not found, set it to None
+            command=button["command"],
             width=20,
             anchor="w",
         )
-        btn.grid(row=i, column=0, sticky="w", padx=5, pady=5)
+        btn.grid(row=i, column=0, sticky="nsew", padx=5, pady=5)
+        self.grid_columnconfigure(0, weight=1)  # Make the button fill the column
         self.buttons.append(btn)
 
     def send_command(self):

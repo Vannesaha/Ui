@@ -65,8 +65,8 @@ class MainController:
 
         # Initially, only the start menu is visible
         self.start_menu.pack(fill="both", expand=True)
-        self.control_menu.hide()  # Hide the control menu
-        self.hydraulic_menu.hide()  # Hide the hydraulic menu
+        # self.control_menu.hide()  # Hide the control menu
+        # self.hydraulic_menu.hide()  # Hide the hydraulic menu
 
         # Initialize and run the MQTT publisher
         self.mqtt_publisher = MQTTPublisher(self)
