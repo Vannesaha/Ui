@@ -45,8 +45,6 @@ class MainController:
             self.delete_button_command,
         )
 
-        # Rest of the code...
-
         # Grid configuration
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_rowconfigure(1, weight=0)

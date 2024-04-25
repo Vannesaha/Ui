@@ -1,7 +1,10 @@
 # window_utils.py
 
+MAX_WIDTH = 800
+MAX_HEIGHT = 460
 
-def set_window_size(window, max_width=1024, max_height=600):
+
+def set_window_size(window, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):
     # Get the screen size
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()

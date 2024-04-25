@@ -1,6 +1,7 @@
 # hydraulic_menu.py
 
 import tkinter as tk
+from src.menus.base_menu import BaseMenu
 from tkinter import simpledialog
 from config.settings import DEVICE_1
 from src.utils.button_manager import ButtonManager  # Import ButtonManager
@@ -15,7 +16,7 @@ BUTTON_TEXTS = [
 ]
 
 
-class HydraulicMenu(tk.Frame):
+class HydraulicMenu(BaseMenu):
     def __init__(self, parent, controller):
         # Initialize the HydraulicMenu with a parent frame and a controller
         tk.Frame.__init__(self, parent)
@@ -101,12 +102,3 @@ class HydraulicMenu(tk.Frame):
         topic = f"device/{DEVICE_1}/set_cylinder_position"
         message = f"set_cylinder:{cylinder},set_position:{position}"
         self.controller.mqtt_publisher.publish_command(topic, message)
-
-    def show(self):
-        # Show the HydraulicMenu frame itself
-        self.pack(fill="both", expand=True)
-        self.focus_set()  # Add this line to focus on this frame when it's shown
-
-    def hide(self):
-        # Hide the HydraulicMenu frame
-        self.pack_forget()

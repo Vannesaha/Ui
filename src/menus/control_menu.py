@@ -1,5 +1,6 @@
 # control_menu.py
 import tkinter as tk
+from src.menus.base_menu import BaseMenu
 from src.utils.button_manager import ButtonManager
 
 
@@ -18,7 +19,7 @@ BUTTON_TEXTS = [
 ]
 
 
-class ControlMenu(tk.Frame):
+class ControlMenu(BaseMenu):
     """A control menu frame with various buttons for testing different functionalities."""
 
     def __init__(self, parent, controller):
@@ -41,19 +42,6 @@ class ControlMenu(tk.Frame):
             {"text": BUTTON_TEXTS[7], "command": self.controller.back_to_start_menu},
         ]
         self.buttons = self.button_manager.create_menu_buttons(buttons)
-
-    def show(self):
-        # Show the ControlMenu frame itself
-        self.pack(fill="both", expand=True)
-        self.focus_set()  # Add this line to focus on this frame when it's shown
-
-    def hide(self):
-        # Hide the ControlMenu frame
-        self.pack_forget()
-
-    # def get_main_widget(self):
-    #     # Return the main frame
-    #     return self.main_frame
 
     def test_connection(self):
         print("Test connection button clicked")
