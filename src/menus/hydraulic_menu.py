@@ -31,7 +31,10 @@ class HydraulicMenu(BaseMenu):
             {"text": BUTTON_TEXTS[0], "input": True},
             {"text": BUTTON_TEXTS[1], "input": True},
             {"text": BUTTON_TEXTS[2], "command": self.send_command},
-            {"text": BUTTON_TEXTS[3], "command": self.controller.back_to_control_menu},
+            {
+                "text": BUTTON_TEXTS[3],
+                "command": lambda: self.controller.switch_to_menu("control_menu"),
+            },
         ]
 
         for i, button in enumerate(buttons):

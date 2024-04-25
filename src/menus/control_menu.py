@@ -39,7 +39,10 @@ class ControlMenu(BaseMenu):
             {"text": BUTTON_TEXTS[4], "command": self.test_blade_direction},
             {"text": BUTTON_TEXTS[5], "command": self.test_blade},
             {"text": BUTTON_TEXTS[6], "command": self.test_sensors},
-            {"text": BUTTON_TEXTS[7], "command": self.controller.back_to_start_menu},
+            {
+                "text": BUTTON_TEXTS[7],
+                "command": lambda: self.controller.switch_to_menu("start_menu"),
+            },
         ]
         self.buttons = self.button_manager.create_menu_buttons(buttons)
 
@@ -49,7 +52,7 @@ class ControlMenu(BaseMenu):
     def test_hydraulics(self):
         print("Test hyrdraulics button clicked")
         # Open the hydraulic menu when the button is clicked
-        self.controller.open_hydraulic_menu()
+        self.controller.switch_to_menu("hydraulic_menu")
 
     def test_saw_movemend(self):
         print("Test saw movement button clicked")

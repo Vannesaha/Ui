@@ -66,6 +66,8 @@ class MainController:
         # Initially, only the start menu is visible
         self.start_menu.show()  # Show the start menu
 
+        self.current_menu = self.start_menu  # Keep track of the current menu
+
         # Initialize and run the MQTT publisher
         self.mqtt_publisher = MQTTPublisher(self)
         self.mqtt_publisher.run()
@@ -74,32 +76,13 @@ class MainController:
         # Run the Tkinter event loop
         self.root.mainloop()
 
-    # Add a method to switch between menus
-    def switch_menu(self, menu_to_hide, menu_to_show):
-        menu_to_hide.hide()
-        menu_to_show.show()  # Show the new menu
+    # Switch to the menu with the provided name and hide the current menu
+    def switch_to_menu(self, menu_name):
+        new_menu = getattr(self, f"{menu_name}")
+        self.current_menu.hide()  # Hide the current menu
+        new_menu.show()  # Show the new menu
         self.root.update_idletasks()  # Update the window to show the new menu
-
-    def open_control_menu(self):
-        print("Control menu button clicked")
-        self.switch_menu(self.start_menu, self.control_menu)
-
-    def open_hydraulic_menu(self):
-        print("Test hydraulics button clicked")
-
-        # Check if the hydraulic device is offline
-        # if self.device_statuses.get("hydraulic") != "online":
-        #  raise ValueError("Hydraulic device is offline. Cannot open hydraulic menu.")
-
-        self.switch_menu(self.control_menu, self.hydraulic_menu)
-
-    def back_to_start_menu(self):
-        print("Back to start_menu button clicked")
-        self.switch_menu(self.control_menu, self.start_menu)
-
-    def back_to_control_menu(self):
-        print("Back to control_menu button clicked")
-        self.switch_menu(self.hydraulic_menu, self.control_menu)
+        self.current_menu = new_menu  # Update the current menu
 
     def sendStatusUpdate(self, device_id, status):
         self.device_statuses[device_id] = status  # Update the status in the dictionary

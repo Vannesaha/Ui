@@ -4,8 +4,6 @@ import tkinter as tk
 from src.menus.base_menu import BaseMenu
 from src.utils.button_manager import ButtonManager
 
-# start_menu.py
-
 # Define button texts
 BUTTON_TEXTS = [
     "1. Aloita",
@@ -27,7 +25,7 @@ class StartMenu(BaseMenu):
         buttons = [
             {
                 "text": BUTTON_TEXTS[0],
-                "command": self.controller.open_control_menu,
+                "command": lambda: self.controller.switch_to_menu("control_menu"),
             },
             {
                 "text": BUTTON_TEXTS[1],
