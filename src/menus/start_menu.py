@@ -1,6 +1,12 @@
 # start_menu.py
 import tkinter as tk
 
+# Define a dictionary to hold all the text
+TEXTS = {
+    "start": "  1. Aloita",
+    "settings": "  2. Asetukset",
+}
+
 
 class StartMenu(tk.Frame):
     # A start menu frame with various buttons for starting the application and opening settings
@@ -15,11 +21,11 @@ class StartMenu(tk.Frame):
         # Create buttons from the configurations
         buttons = [
             {
-                "text": "  1. Aloita",
+                "text": TEXTS["start"],
                 "command": self.controller.open_control_menu,
             },
             {
-                "text": "  2. Asetukset",
+                "text": TEXTS["settings"],
                 "command": self.settings_clicked,
             },
         ]
@@ -31,8 +37,10 @@ class StartMenu(tk.Frame):
                 command=button["command"],
                 width=20,
                 anchor="w",
+                padx=10,
             )
-            btn.grid(row=i, column=0, sticky="w", padx=5, pady=5)
+            btn.grid(row=i, column=0, sticky="nsew", padx=5, pady=5)
+            self.grid_columnconfigure(0, weight=1)
             self.buttons.append(btn)
 
     def show(self):

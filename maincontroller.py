@@ -47,11 +47,14 @@ class MainController:
 
         # Grid configuration
         self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_rowconfigure(1, weight=0)
         self.root.grid_columnconfigure(0, weight=1)
-        self.root.grid_columnconfigure(1, weight=3)
+        self.root.grid_columnconfigure(1, weight=1)
 
-        # Pack the frames into the root window
-        self.menu_frame.grid(row=0, column=0, sticky="nsew")
+        # Place the frames
+        self.menu_frame.grid(
+            row=0, column=0, rowspan=2, sticky="nsew"
+        )  # Set rowspan to 2
         self.status_frame.grid(row=0, column=1, sticky="nsew")
         self.other_frame.grid(row=1, column=1, sticky="nsew")
 
@@ -110,7 +113,12 @@ class MainController:
         menu_frame_title = tk.Label(
             menu_frame, text=MENU_FRAME_TITLE, font=("Arial", 16)
         )
-        menu_frame_title.pack()
+        menu_frame_title.pack(
+            anchor="center", padx=10, pady=10
+        )  # Add padding to the title
+
+        # Configure menu_frame to fill the whole column and stick to the top
+        menu_frame.pack(fill="both", expand=True, side="left")
 
         return menu_frame  # Return the menu_frame object
 
@@ -122,7 +130,7 @@ class MainController:
         status_frame_title = tk.Label(
             status_frame, text=STATUS_FRAME_TITLE, font=("Arial", 16)
         )
-        status_frame_title.pack()
+        status_frame_title.pack(fill="x", padx=10, pady=10)
 
         # Create labels and map device IDs to status labels
         self.device_labels = {}
@@ -151,40 +159,40 @@ class MainController:
 
         # Create a title for the other_frame
         other_frame_title = tk.Label(other_frame, text=OTHER_FRAME_TITLE)
-        other_frame_title.pack(side=tk.TOP)
+        other_frame_title.grid(row=0, column=0, columnspan=5, sticky="ew")
 
         # Create a ButtonManager for the other_frame
         self.button_manager = ButtonManager(other_frame)
 
-        # Create a button in the other_frame
+        # Create buttons in the other_frame using grid method
         example_button1 = self.button_manager.create_button(
             EXAMPLE_BUTTON_1_TEXT, self.example_button_command1
         )
-        example_button1.pack(side=tk.LEFT)
+        example_button1.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
 
-        # Create another button in the other_frame
         example_button2 = self.button_manager.create_button(
             EXAMPLE_BUTTON_2_TEXT, self.example_button_command2
         )
-        example_button2.pack(side=tk.LEFT)
+        example_button2.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
 
-        # Create a button in the other_frame
         example_button3 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_3_TEXT, self.example_button_command1
+            EXAMPLE_BUTTON_3_TEXT, self.example_button_command3
         )
-        example_button3.pack(side=tk.LEFT)
+        example_button3.grid(row=1, column=2, padx=5, pady=5, sticky="ew")
 
-        # Create another button in the other_frame
         example_button4 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_4_TEXT, self.example_button_command2
+            EXAMPLE_BUTTON_4_TEXT, self.example_button_command4
         )
-        example_button4.pack(side=tk.LEFT)
+        example_button4.grid(row=1, column=3, padx=5, pady=5, sticky="ew")
 
-        # Create another button in the other_frame
         example_button5 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_5_TEXT, self.example_button_command2
+            EXAMPLE_BUTTON_5_TEXT, self.example_button_command5
         )
-        example_button5.pack(side=tk.LEFT)
+        example_button5.grid(row=1, column=4, padx=5, pady=5, sticky="ew")
+
+        # Configure the columns to have equal weight
+        for i in range(5):
+            other_frame.grid_columnconfigure(i, weight=1)
 
         return other_frame
 

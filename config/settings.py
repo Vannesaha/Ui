@@ -1,5 +1,5 @@
 # Configuration settings for MQTT Broker
-BROKER = "192.168.1.108"  # broker address
+BROKER = "192.168.1.102"  # broker address
 PORT = 1883
 DEVICE_ID = "ui_rasberryPi"  # client ID for MQTT broker
 
