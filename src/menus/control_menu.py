@@ -1,5 +1,6 @@
 # control_menu.py
 import tkinter as tk
+from src.menus.button_manager import ButtonManager
 
 
 class ControlMenu(tk.Frame):
@@ -9,7 +10,7 @@ class ControlMenu(tk.Frame):
         """Initialize the ControlMenu with a parent frame and a controller."""
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        self.buttons = []
+        self.button_manager = ButtonManager(self)
         self.create_buttons()
 
     def create_buttons(self):
@@ -25,23 +26,12 @@ class ControlMenu(tk.Frame):
             {"text": "7. Anturit", "command": self.test_sensors},
             {"text": "8. takaisin", "command": self.controller.back_to_start_menu},
         ]
-
-        for i, button in enumerate(buttons, 1):
-            btn = tk.Button(
-                self,
-                text=button["text"],
-                command=button["command"],
-                width=20,
-                anchor="w",
-                padx=10,
-            )
-            btn.grid(row=i - 1, column=0, sticky="nsew", padx=5, pady=5)
-            self.grid_columnconfigure(0, weight=1)
-            self.buttons.append(btn)
+        self.buttons = self.button_manager.create_menu_buttons(buttons)
 
     def show(self):
         # Show the ControlMenu frame itself
         self.pack(fill="both", expand=True)
+        self.focus_set()  # Add this line to focus on this frame when it's shown
 
     def hide(self):
         # Hide the ControlMenu frame

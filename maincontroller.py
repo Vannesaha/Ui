@@ -64,7 +64,7 @@ class MainController:
         self.hydraulic_menu = HydraulicMenu(self.menu_frame, self)
 
         # Initially, only the start menu is visible
-        self.start_menu.pack(fill="both", expand=True)
+        self.start_menu.show()  # Show the start menu
         # self.control_menu.hide()  # Hide the control menu
         # self.hydraulic_menu.hide()  # Hide the hydraulic menu
 
@@ -165,33 +165,29 @@ class MainController:
         self.button_manager = ButtonManager(other_frame)
 
         # Create buttons in the other_frame using grid method
-        example_button1 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_1_TEXT, self.example_button_command1
-        )
-        example_button1.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
+        button_texts = [
+            EXAMPLE_BUTTON_1_TEXT,
+            EXAMPLE_BUTTON_2_TEXT,
+            EXAMPLE_BUTTON_3_TEXT,
+            EXAMPLE_BUTTON_4_TEXT,
+            EXAMPLE_BUTTON_5_TEXT,
+        ]
+        button_commands = [
+            self.example_button_command1,
+            self.example_button_command2,
+            self.example_button_command3,
+            self.example_button_command4,
+            self.example_button_command5,
+        ]
 
-        example_button2 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_2_TEXT, self.example_button_command2
-        )
-        example_button2.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
-
-        example_button3 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_3_TEXT, self.example_button_command3
-        )
-        example_button3.grid(row=1, column=2, padx=5, pady=5, sticky="ew")
-
-        example_button4 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_4_TEXT, self.example_button_command4
-        )
-        example_button4.grid(row=1, column=3, padx=5, pady=5, sticky="ew")
-
-        example_button5 = self.button_manager.create_button(
-            EXAMPLE_BUTTON_5_TEXT, self.example_button_command5
-        )
-        example_button5.grid(row=1, column=4, padx=5, pady=5, sticky="ew")
-
-        # Configure the columns to have equal weight
         for i in range(5):
+            button = self.button_manager.create_other_buttons(
+                button_texts[i], button_commands[i]
+            )
+            button.grid(row=1, column=i, padx=5, pady=5, sticky="ew")
+            button.config(anchor="center")  # Add this line
+
+            # Configure the columns to have equal weight
             other_frame.grid_columnconfigure(i, weight=1)
 
         return other_frame

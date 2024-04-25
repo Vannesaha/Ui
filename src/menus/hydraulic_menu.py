@@ -3,6 +3,7 @@
 import tkinter as tk
 from tkinter import simpledialog
 from config.settings import DEVICE_1
+from src.menus.button_manager import ButtonManager  # Import ButtonManager
 
 
 class HydraulicMenu(tk.Frame):
@@ -11,6 +12,7 @@ class HydraulicMenu(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.buttons = []
+        self.button_manager = ButtonManager(self)  # Initialize ButtonManager
         self.create_widgets()
 
     def create_widgets(self):
@@ -29,29 +31,42 @@ class HydraulicMenu(tk.Frame):
                 self.create_button(i, button)
 
     def create_input_field(self, i, button):
-        # Create an input field with a label
-        label = tk.Label(self, text=button["text"])
-        label.grid(row=i, column=0, sticky="w", padx=10, pady=5)
-        entry = tk.Entry(self)
-        entry.grid(row=i, column=1, sticky="w", padx=10, pady=5)
-        if button["text"] == "  1. Aseta sylinteri 0-3":
-            self.cylinder_entry = entry
-        else:
-            self.position_entry = entry
-
-    def create_button(self, i, button):
-        # Create a button with the specified text and command
-        btn = tk.Button(
-            self,
-            text=button["text"],
-            command=button["command"],
-            width=20,
-            anchor="w",
-            padx=10,
+        # Create a button for the input field
+        btn = self.button_manager.create_other_buttons(
+            button["text"], lambda: entry.focus_set()
         )
         btn.grid(row=i, column=0, sticky="nsew", padx=5, pady=5)
         self.grid_columnconfigure(0, weight=1)  # Make the button fill the column
         self.buttons.append(btn)
+        self.button_manager.buttons.append(
+            btn
+        )  # Add the button to ButtonManager's list
+
+        # Create an input field
+        entry = tk.Entry(self)
+        entry.grid(row=i, column=1, sticky="w", padx=10, pady=5)
+        if button["text"] == "1. Aseta sylinteri 0-3":
+            self.cylinder_entry = entry
+        else:
+            self.position_entry = entry
+
+        # Bind the 'Enter' key to the input field's associated button
+        entry.bind("<Return>", lambda event: btn.invoke())
+
+    def create_button(self, i, button):
+        # Use ButtonManager to create a button
+        btn = self.button_manager.create_other_buttons(
+            button["text"], button["command"]
+        )
+        btn.grid(row=i, column=0, sticky="nsew", padx=5, pady=5)
+        self.grid_columnconfigure(0, weight=1)  # Make the button fill the column
+        self.buttons.append(btn)
+        self.button_manager.buttons.append(
+            btn
+        )  # Add the button to ButtonManager's list
+
+        # Bind the 'Enter' key to the button's command
+        self.bind("<Return>", lambda event: button["command"]())
 
     def send_command(self):
         # Send the command to set the cylinder position
@@ -81,6 +96,7 @@ class HydraulicMenu(tk.Frame):
     def show(self):
         # Show the HydraulicMenu frame itself
         self.pack(fill="both", expand=True)
+        self.focus_set()  # Add this line to focus on this frame when it's shown
 
     def hide(self):
         # Hide the HydraulicMenu frame

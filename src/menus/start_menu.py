@@ -1,8 +1,10 @@
 # start_menu.py
+
 import tkinter as tk
+from src.menus.button_manager import ButtonManager
 
 # Define a dictionary to hold all the text
-TEXTS = {
+TEXT = {
     "start": "1. Aloita",
     "settings": "2. Asetukset",
 }
@@ -14,43 +16,30 @@ class StartMenu(tk.Frame):
         # Initialize the StartMenu with a master frame and a controller
         tk.Frame.__init__(self, master)
         self.controller = controller
-        self.buttons = []
+        self.button_manager = ButtonManager(self)
         self.create_buttons()
 
     def create_buttons(self):
         # Create buttons from the configurations
         buttons = [
             {
-                "text": TEXTS["start"],
+                "text": TEXT["start"],
                 "command": self.controller.open_control_menu,
             },
             {
-                "text": TEXTS["settings"],
+                "text": TEXT["settings"],
                 "command": self.settings_clicked,
             },
         ]
 
-        for i, button in enumerate(buttons, 1):
-            btn = tk.Button(
-                self,
-                text=button["text"],
-                command=button["command"],
-                width=20,
-                anchor="w",
-                padx=10,
-            )
-            btn.grid(row=i - 1, column=0, sticky="nsew", padx=5, pady=5)
-            self.grid_columnconfigure(0, weight=1)
-            self.buttons.append(btn)
+        self.buttons = self.button_manager.create_menu_buttons(buttons)
 
-            # Bind number keys to corresponding actions
-            self.bind_all(str(i), lambda event, cmd=button["command"]: cmd())
-
-    # Rest of the code...
+    # ... rest of your methods ...
 
     def show(self):
         # Show the StartMenu frame itself
         self.pack(fill="both", expand=True)
+        self.focus_set()  # Add this line to focus on this frame when it's shown
 
     def hide(self):
         # Hide the StartMenu frame
