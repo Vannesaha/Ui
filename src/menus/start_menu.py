@@ -1,13 +1,15 @@
 # start_menu.py
 
 import tkinter as tk
-from src.menus.button_manager import ButtonManager
+from src.utils.button_manager import ButtonManager
 
-# Define a dictionary to hold all the text
-TEXT = {
-    "start": "1. Aloita",
-    "settings": "2. Asetukset",
-}
+# start_menu.py
+
+# Define button texts
+BUTTON_TEXTS = [
+    "1. Aloita",
+    "2. Asetukset",
+]
 
 
 class StartMenu(tk.Frame):
@@ -23,11 +25,11 @@ class StartMenu(tk.Frame):
         # Create buttons from the configurations
         buttons = [
             {
-                "text": TEXT["start"],
+                "text": BUTTON_TEXTS[0],
                 "command": self.controller.open_control_menu,
             },
             {
-                "text": TEXT["settings"],
+                "text": BUTTON_TEXTS[1],
                 "command": self.settings_clicked,
             },
         ]

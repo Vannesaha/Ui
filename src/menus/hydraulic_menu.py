@@ -3,7 +3,16 @@
 import tkinter as tk
 from tkinter import simpledialog
 from config.settings import DEVICE_1
-from src.menus.button_manager import ButtonManager  # Import ButtonManager
+from src.utils.button_manager import ButtonManager  # Import ButtonManager
+
+
+# Define button texts
+BUTTON_TEXTS = [
+    "1. Aseta sylinteri 0-3",
+    "2. Aseta sylinterin paikka 0-180",
+    "3. Send Command",
+    "4. Back",
+]
 
 
 class HydraulicMenu(tk.Frame):
@@ -18,10 +27,10 @@ class HydraulicMenu(tk.Frame):
     def create_widgets(self):
         # Create the widgets for the HydraulicMenu
         buttons = [
-            {"text": "1. Aseta sylinteri 0-3", "input": True},
-            {"text": "2. Aseta sylinterin paikka 0-180", "input": True},
-            {"text": "3. Send Command", "command": self.send_command},
-            {"text": "4. Back", "command": self.controller.back_to_control_menu},
+            {"text": BUTTON_TEXTS[0], "input": True},
+            {"text": BUTTON_TEXTS[1], "input": True},
+            {"text": BUTTON_TEXTS[2], "command": self.send_command},
+            {"text": BUTTON_TEXTS[3], "command": self.controller.back_to_control_menu},
         ]
 
         for i, button in enumerate(buttons):
