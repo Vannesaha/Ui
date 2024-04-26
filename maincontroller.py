@@ -89,9 +89,6 @@ class MainController:
 
         print(device_id, status)  # Emit the signal with the provided parameters
 
-    def ok_button_command(self, event=None):
-        print("OK button was clicked!")
-
     def switch_to_menu(self, menu_name):
         new_menu = getattr(self, f"{menu_name}")
         self.current_menu.hide()  # Hide the current menu
@@ -112,6 +109,10 @@ class MainController:
             self.root.update_idletasks()  # Update the window to show the previous menu
             self.current_menu = previous_menu  # Update the current menu
         print("Back button was clicked!")
+
+    def ok_button_command(self, event=None):
+        self.current_menu.ok_command()
+        print("OK button was clicked!")
 
     def delete_button_command(self, event=None):
         print("Delete button was clicked!")

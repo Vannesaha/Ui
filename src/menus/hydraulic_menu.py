@@ -22,6 +22,7 @@ class HydraulicMenu(BaseMenu):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.buttons = []
+        self.entries = []  # Define the entries attribute
         self.button_manager = ButtonManager(self)  # Initialize ButtonManager
         self.create_widgets()
 
@@ -44,6 +45,9 @@ class HydraulicMenu(BaseMenu):
                 self.create_button(i, button)
 
     def create_input_field(self, i, button):
+        # Create a validation command
+        vcmd = (self.register(self.validate_integer), "%P")
+
         # Create a button for the input field
         btn = self.button_manager.create_other_buttons(
             button["text"], lambda: entry.focus_set()
@@ -55,16 +59,19 @@ class HydraulicMenu(BaseMenu):
             btn
         )  # Add the button to ButtonManager's list
 
-        # Create an input field
-        entry = tk.Entry(self)
+        # Create an input field with the validation command
+        entry = tk.Entry(self, validate="key", validatecommand=vcmd)
         entry.grid(row=i, column=1, sticky="w", padx=10, pady=5)
-        if button["text"] == "1. Aseta sylinteri 0-3":
-            self.cylinder_entry = entry
-        else:
-            self.position_entry = entry
 
-        # Bind the 'Enter' key to the input field's associated button
-        entry.bind("<Return>", lambda event: btn.invoke())
+        # Store the Entry widget for later use
+        self.entries.append(entry)
+
+    def validate_integer(self, new_value):
+        # If the new value is empty or a valid integer, allow the change
+        if new_value == "" or new_value.isdigit():
+            return True
+        # Otherwise, discard the change
+        return False
 
     def create_button(self, i, button):
         # Use ButtonManager to create a button
@@ -81,27 +88,43 @@ class HydraulicMenu(BaseMenu):
         # Bind the 'Enter' key to the button's command
         self.bind("<Return>", lambda event: button["command"]())
 
+    def ok_command(self, event=None):
+        if event is not None:
+            # Stop the event from propagating further
+            event.tkinter_event_stop_propagation()
+
+        # Get the values from the Entry widgets
+        cylinder = self.entries[0].get()
+        position = self.entries[1].get()
+
+        # Print the values
+        print(f"Cylinder: {cylinder}, Position: {position}")
+
     def send_command(self):
         # Send the command to set the cylinder position
         # Check if the hydraulic device is offline
-        if self.device_statuses.get("hydraulic") != "online":
-            raise ValueError("Hydraulic device is offline. Cannot send command.")
+        # if self.device_statuses.get("hydraulic") != "online":
+        #     raise ValueError("Hydraulic device is offline. Cannot send command.")
 
-        try:
-            cylinder = int(self.cylinder_entry.get())
-            position = int(self.position_entry.get())
-        except ValueError:
-            print("Please enter valid integers for cylinder and position.")
-            return
+        # try:
+        #     cylinder = int(self.cylinder_entry.get())
+        #     position = int(self.position_entry.get())
+        # except ValueError:
+        #     print("Please enter valid integers for cylinder and position.")
+        #     return
 
-        if not 0 <= cylinder <= 3:
-            print("Cylinder value must be between 0 and 3.")
-            return
+        # if not 0 <= cylinder <= 3:
+        #     print("Cylinder value must be between 0 and 3.")
+        #     return
 
-        if not 0 <= position <= 180:
-            print("Position value must be between 0 and 180.")
-            return
+        # if not 0 <= position <= 180:
+        #     print("Position value must be between 0 and 180.")
+        #     return
 
-        topic = f"device/{DEVICE_1}/set_cylinder_position"
-        message = f"set_cylinder:{cylinder},set_position:{position}"
-        self.controller.mqtt_publisher.publish_command(topic, message)
+        # topic = f"device/{DEVICE_1}/set_cylinder_position"
+        # message = f"set_cylinder:{cylinder},set_position:{position}"
+        # self.controller.mqtt_publisher.publish_command(topic, message)
+
+        cylinder = self.entries[0].get()
+        position = self.entries[1].get()
+        print("Send command button clicked: ", cylinder, position)
