@@ -18,9 +18,6 @@ from src.utils.button_manager import ButtonManager
 
 
 ROOT_TITLE = "Vannesaha"
-MENU_FRAME_TITLE = "Valikko"
-STATUS_FRAME_TITLE = "Laitteiden tila"
-OTHER_FRAME_TITLE = "Navigointi"
 
 
 class MainController:
