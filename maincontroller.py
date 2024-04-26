@@ -67,6 +67,7 @@ class MainController:
         self.start_menu.show()  # Show the start menu
 
         self.current_menu = self.start_menu  # Keep track of the current menu
+        self.menu_stack = []  # Add a stack to keep track of the menu history
 
         # Initialize and run the MQTT publisher
         self.mqtt_publisher = MQTTPublisher(self)
@@ -75,14 +76,6 @@ class MainController:
     def start(self):
         # Run the Tkinter event loop
         self.root.mainloop()
-
-    # Switch to the menu with the provided name and hide the current menu
-    def switch_to_menu(self, menu_name):
-        new_menu = getattr(self, f"{menu_name}")
-        self.current_menu.hide()  # Hide the current menu
-        new_menu.show()  # Show the new menu
-        self.root.update_idletasks()  # Update the window to show the new menu
-        self.current_menu = new_menu  # Update the current menu
 
     def sendStatusUpdate(self, device_id, status):
         self.device_statuses[device_id] = status  # Update the status in the dictionary
@@ -99,7 +92,25 @@ class MainController:
     def ok_button_command(self, event=None):
         print("OK button was clicked!")
 
+    def switch_to_menu(self, menu_name):
+        new_menu = getattr(self, f"{menu_name}")
+        self.current_menu.hide()  # Hide the current menu
+        new_menu.show()  # Show the new menu
+        self.root.update_idletasks()  # Update the window to show the new menu
+        self.menu_stack.append(
+            self.current_menu
+        )  # Push the current menu onto the stack
+        self.current_menu = new_menu  # Update the current menu
+
     def back_button_command(self, event=None):
+        if self.menu_stack:  # If there is a previous menu
+            self.current_menu.hide()  # Hide the current menu
+            previous_menu = (
+                self.menu_stack.pop()
+            )  # Pop the previous menu from the stack
+            previous_menu.show()  # Show the previous menu
+            self.root.update_idletasks()  # Update the window to show the previous menu
+            self.current_menu = previous_menu  # Update the current menu
         print("Back button was clicked!")
 
     def delete_button_command(self, event=None):
