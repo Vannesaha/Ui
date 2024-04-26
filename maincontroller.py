@@ -115,4 +115,5 @@ class MainController:
         print("OK button was clicked!")
 
     def delete_button_command(self, event=None):
+        self.current_menu.delete_command()
         print("Delete button was clicked!")

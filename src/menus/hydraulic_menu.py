@@ -48,6 +48,10 @@ class HydraulicMenu(BaseMenu):
         # Create a validation command
         vcmd = (self.register(self.validate_integer), "%P")
 
+        # Create an input field with the validation command
+        entry = tk.Entry(self, validate="key", validatecommand=vcmd)
+        entry.grid(row=i, column=1, sticky="w", padx=10, pady=5)
+
         # Create a button for the input field
         btn = self.button_manager.create_other_buttons(
             button["text"], lambda: entry.focus_set()
@@ -59,9 +63,8 @@ class HydraulicMenu(BaseMenu):
             btn
         )  # Add the button to ButtonManager's list
 
-        # Create an input field with the validation command
-        entry = tk.Entry(self, validate="key", validatecommand=vcmd)
-        entry.grid(row=i, column=1, sticky="w", padx=10, pady=5)
+        # Bind a key to a function that sets the focus to the input field
+        self.bind(str(i + 1), lambda event: entry.focus_set())
 
         # Store the Entry widget for later use
         self.entries.append(entry)
@@ -97,8 +100,13 @@ class HydraulicMenu(BaseMenu):
         cylinder = self.entries[0].get()
         position = self.entries[1].get()
 
-        # Print the values
-        print(f"Cylinder: {cylinder}, Position: {position}")
+        # Move focus back to the menu
+        self.show()
+
+    def delete_command(self):
+        # Clear the Entry widgets
+        for entry in self.entries:
+            entry.delete(0, tk.END)
 
     def send_command(self):
         # Send the command to set the cylinder position
