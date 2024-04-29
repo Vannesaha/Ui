@@ -1,65 +1,84 @@
----
-
-# Project Title
+# Vannesaha Ui
 
 ## Overview
-Briefly describe the project, its functionality, and what it aims to achieve. Mention the technologies used (Python, QML, MQTT).
+
+This project entails the development of a user interface application tailored for a band saw, focusing on user-friendliness and real-time functionality. The interface is created using Python, MQTT protocol, and TKINTER libraries. The project offers versatile tools for saw management and monitoring. Python provides the foundational logic for the application, TKINTER is utilized for creating the user interface, and MQTT enables communication between devices.
 
 ## Getting Started
-Instructions for initial setup and running the project.
+
+To set up and run the project, follow these steps:
 
 ### Prerequisites
-List the necessary prerequisites to run the application.
+
+- Python3
+- PIP3 package management system
+- MQTT broker server (e.g., Mosquitto)
 
 ### Installation
-Step-by-step guide for installing the application.
+
+- Check that the requirements.txt file contains all necessary dependencies.
+- Install the packages using the command: pip3 install -r requirements.txt.
+- Ensure Python3 and pip3 package management system are already installed.
 
 ## Project Structure
+
 Explanation of the main directories and files in the project.
 
 ### `UI/`
+
 General overview of what the `UI` directory contains and its role in the project.
 
 #### `config/`
-- `settings.py`: Describe the configuration settings that can be modified.
+
+- `settings.py`: Contains configuration variables required for the application.
 
 #### `src/`
+
 - General description of the source code.
 
-#### `ui/`
+#### `frames/`
+
+- Detailed description of each UI frame component.
+  - `menu_frame.py`: Handles the construction of the menu frame.
+  - `status_frame.py`: Manages the status section and its contents.
+  - `navigation_frame.py`: Contains navigation buttons and functionalities.
+
+#### `Menus/`
+
 - Detailed description of each QML UI component.
-  - `control_menu/`
-    - `control_menu.py`: Explain the backend logic for this menu.
-    - `control_menu.qml`: Explain the UI layout and elements for the control menu.
-  - `hydraulic_menu/`
-    - `hydraulic_menu.py`: Backend logic for the hydraulic menu.
-    - `hydraulic_menu.qml`: UI layout for the hydraulic menu.
-  - `start_menu/`
-    - `start_menu.py`: Describe what happens on application start.
-    - `start_menu.qml`: UI elements for the starting menu.
+  - `base_meny.py`: Includes shared functions for menus.
+  - `control_meny.py`: Controls menu-related functionalities.
+  - `hydraulic_menu.py`: Manages hydraulic-related functionalities.
+  - `start_menu.py`: Handles the start menu functionalities.
 
 ### `utils/`
-- `device_status.py`: Explain how device status is managed. (not in use att the moment)
-- `mqtt_publisher.py`: Outline the responsibilities of handling MQTT messaging.
+
+- Contains utility functions and tools for the application.
+  - `button_manager.py`: functions for creating buttons and keyboard focus.
+  - `mqtt_publisher.py`: Outline the responsibilities of handling MQTT messaging.
+  - `update_status.py`: Function for status update.
+  - `window_utils.py`: Function for setting max size for the window.
 
 ### `main.py`
+
 Describe the entry point of the application.
 
 ### `maincontroller.py`
-Discuss the role of this file in the overall application.
+
+Responsible for managing the core functionalities of the application.
 
 ### `.gitignore`
-List the kinds of files that are intentionally untracked.
+
+Specifies the types of files that should be ignored by version control.
 
 ### `requirements.txt`
-Discuss how to use this file to install dependencies.
+
+Lists all dependencies required by the project.
 
 ## Usage
+
 Instructions on how the end-user should use the application, including navigation through different menus and executing core functions.
 
 ## Contributing
+
 Guidelines for how to contribute to the project, including coding standards, pull request process, etc.
-
-
-
----
