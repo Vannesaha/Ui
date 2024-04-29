@@ -45,7 +45,7 @@ General overview of what the `UI` directory contains and its role in the project
 
 #### `Menus/`
 
-- Detailed description of each QML UI component.
+- Detailed description of each menu component.
   - `base_meny.py`: Includes shared functions for menus.
   - `control_meny.py`: Controls menu-related functionalities.
   - `hydraulic_menu.py`: Manages hydraulic-related functionalities.
