@@ -1,4 +1,4 @@
-# other_frame.py
+# Navigation_frame.py
 import tkinter as tk
 from src.utils.button_manager import ButtonManager
 

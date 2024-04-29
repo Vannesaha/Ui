@@ -87,7 +87,7 @@ class MainController:
         print(device_id, status)  # Emit the signal with the provided parameters
 
     def switch_to_menu(self, menu_name):
-        new_menu = getattr(self, f"{menu_name}")
+        new_menu = getattr(self, f"{menu_name}")  # Get the menu object by name
         self.current_menu.hide()  # Hide the current menu
         new_menu.show()  # Show the new menu
         self.root.update_idletasks()  # Update the window to show the new menu
