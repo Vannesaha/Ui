@@ -3,6 +3,7 @@
 import tkinter as tk
 import platform
 
+from src.frames.main_frame import create_main_frame
 from src.frames.navigation_frame import create_navigation_frame
 from src.frames.status_frame import create_status_frame
 from src.frames.menu_frame import create_menu_frame
@@ -23,7 +24,8 @@ ROOT_TITLE = "Vannesaha"
 class MainController:
     def __init__(self):
         # Create the root window
-        self.root = tk.Tk()
+
+        self.root = create_main_frame()
         self.root.title(ROOT_TITLE)
 
         # Set the window size
@@ -49,11 +51,12 @@ class MainController:
         self.root.grid_columnconfigure(1, weight=1)
 
         # Place the frames
+        # Place the frames with padding around the menu_frame
         self.menu_frame.grid(
-            row=0, column=0, rowspan=2, sticky="nsew"
-        )  # Set rowspan to 2
-        self.status_frame.grid(row=0, column=1, sticky="nsew")
-        self.navigation_frame.grid(row=1, column=1, sticky="nsew")
+            row=0, column=0, rowspan=2, sticky="nsew", padx=10, pady=10
+        )
+        self.status_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+        self.navigation_frame.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
 
         # Create the start menu and control menu in the menu frame
         self.start_menu = StartMenu(self.menu_frame, self)

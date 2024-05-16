@@ -4,6 +4,10 @@
 
 This project entails the development of a user interface application tailored for a band saw, focusing on user-friendliness and real-time functionality. The interface is created using Python, MQTT protocol, and TKINTER libraries. The project offers versatile tools for saw management and monitoring. Python provides the foundational logic for the application, TKINTER is utilized for creating the user interface, and MQTT enables communication between devices.
 
+## Table of Contents
+
+1. [Overview] (##Overviev)
+
 ## Getting Started
 
 To set up and run the project, follow these steps:

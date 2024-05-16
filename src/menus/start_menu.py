@@ -15,7 +15,7 @@ class StartMenu(BaseMenu):
     # A start menu frame with various buttons for starting the application and opening settings
     def __init__(self, master, controller):
         # Initialize the StartMenu with a master frame and a controller
-        tk.Frame.__init__(self, master)
+        tk.Frame.__init__(self, master, bg="#0109D4")  # Ensure background color
         self.controller = controller
         self.button_manager = ButtonManager(self)
         self.create_buttons()

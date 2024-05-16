@@ -34,6 +34,7 @@ class ButtonManager:
                 width=20,  # Set the width of the button
                 anchor="w",  # Set the anchor to the west
                 padx=10,  # Set the padding for the button text
+                bg="#FFFFFF",  # Set the background color of the button
             )
 
             # Add the button to the list of buttons

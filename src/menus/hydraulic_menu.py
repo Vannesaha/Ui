@@ -19,7 +19,7 @@ BUTTON_TEXTS = [
 class HydraulicMenu(BaseMenu):
     def __init__(self, parent, controller):
         # Initialize the HydraulicMenu with a parent frame and a controller
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bg="#0109D4")  # Ensure background color
         self.controller = controller
         self.buttons = []
         self.entries = []  # Define the entries attribute
