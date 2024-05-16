@@ -25,16 +25,30 @@ def create_menu_frame(root):
     menu_frame.grid_rowconfigure(0, weight=0)
     menu_frame.grid_columnconfigure(0, weight=1)
 
-    # # Create 'Jatka' button
-    # continue_button = tk.Button(
-    #     menu_frame, text="Jatka", command=lambda: print("Jatka clicked")
-    # )
-    # continue_button.grid(row=2, column=1, padx=(0, 10), pady=10, sticky="nsew")
+    # Create 'Jatka' button
+    continue_button = tk.Button(
+        menu_frame, text="Jatka", command=lambda: print("Jatka clicked")
+    )
+    continue_button.grid(row=2, column=0, padx=(5, 5), pady=(1, 5), sticky="e")
+    continue_button.configure(
+        width=10,
+        highlightbackground="#0109D4",
+        bg="#378AEC",
+        borderwidth=2,
+        relief="solid",
+    )  # Määritä taustaväri
 
-    # # Create 'Takaisin' button
-    # back_button = tk.Button(
-    #     menu_frame, text="Takaisin", command=lambda: print("Takaisin clicked")
-    # )
-    # back_button.grid(row=2, column=0, padx=(10, 0), pady=10, sticky="nsew")
+    # Create 'Takaisin' button
+    back_button = tk.Button(
+        menu_frame, text="Takaisin", command=lambda: print("Takaisin clicked")
+    )
+    back_button.grid(row=2, column=0, padx=(5, 5), pady=(1, 5), sticky="w")
+    back_button.configure(
+        width=10,
+        highlightbackground="#0109D4",
+        bg="#378AEC",
+        borderwidth=2,
+        relief="solid",
+    )  # Määritä taustaväri
 
     return menu_frame  # Return the menu_frame object
