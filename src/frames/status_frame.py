@@ -13,11 +13,14 @@ STATUS_FRAME_TITLE = "Laitteiden tila"
 
 def create_status_frame(root, device_labels):
     """Create the status frame and its components."""
-    status_frame = tk.Frame(root, borderwidth=2, relief="solid")
+    status_frame = tk.Frame(root, borderwidth=2, relief="solid", bg="#0109D4")
 
     # Create a title label for the frame
     status_frame_title = tk.Label(
-        status_frame, text=STATUS_FRAME_TITLE, font=("Arial", 16)
+        status_frame, text=STATUS_FRAME_TITLE, 
+        font=("Inter Medium", 20),
+        bg="#0109D4",  # color for menu text backround
+        fg="#D9DAF9", #color for menu texts
     )
     status_frame_title.pack(fill="x", padx=10, pady=10)
 

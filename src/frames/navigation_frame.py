@@ -11,11 +11,13 @@ NAVIGATION_FRAME_TITLE = "Navigointi"
 def create_navigation_frame(
     root, ok_button_command, back_button_command, delete_button_command
 ):
-    navigation_frame = tk.Frame(root, borderwidth=2, relief="solid")
+    navigation_frame = tk.Frame(root, borderwidth=2, relief="solid", bg="#0109D4")
 
     # Create a title for the other_frame
-    navigation_frame_title = tk.Label(navigation_frame, text=NAVIGATION_FRAME_TITLE)
-    navigation_frame_title.grid(row=0, column=0, columnspan=5, sticky="ew")
+    # navigation_frame_title = tk.Label(
+    #     navigation_frame, text=NAVIGATION_FRAME_TITLE, bg="#0109D4"
+    # )
+    # navigation_frame_title.grid(row=0, column=0, columnspan=5, sticky="ew")
 
     # Create a ButtonManager for the
     button_manager = ButtonManager(navigation_frame)

@@ -18,9 +18,17 @@ class ButtonManager:
                 self.buttons[index].invoke()
 
     # Create other buttons for the menu
-    def create_other_buttons(self, text, command, text_anchor="w", pdx=10, pdy=5):
+    def create_other_buttons(self, text, command, text_anchor="w", pdx=5, pdy=1):
         button = tk.Button(
-            self.parent, text=text, command=command, anchor=text_anchor, padx=pdx
+            self.parent,
+            text=text,
+            command=command,
+            anchor=text_anchor,
+            padx=pdx,
+            highlightbackground="#0109D4",
+            bg="#378AEC",
+            borderwidth=2,
+            relief="solid",
         )
         return button
 
@@ -34,12 +42,15 @@ class ButtonManager:
                 width=20,  # Set the width of the button
                 anchor="w",  # Set the anchor to the west
                 padx=10,  # Set the padding for the button text
-                bg="#FFFFFF",  # Set the background color of the button
+                highlightbackground="#0109D4",
+                bg="#378AEC",
+                borderwidth=2,
+                relief="solid",
             )
 
             # Add the button to the list of buttons
             btn.grid(
-                row=i - 1, column=0, sticky="nsew", padx=5, pady=5
+                row=i - 1, column=0, sticky="nsew", padx=5, pady=1
             )  # Place the button in the grid
             self.parent.grid_columnconfigure(
                 0, weight=1

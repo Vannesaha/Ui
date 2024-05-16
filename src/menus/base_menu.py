@@ -3,14 +3,14 @@
 import tkinter as tk
 
 
-class BaseMenu(tk.Frame):  # Create a BaseMenu class
+class BaseMenu(tk.Frame):
     def __init__(self, master, controller):
-        tk.Frame.__init__(self, master)  # Initialize the BaseMenu with a master frame
-        self.controller = controller  # Set the controller attribute
+        tk.Frame.__init__(self, master)
+        self.controller = controller
 
     def show(self):
-        self.pack(fill="both", expand=True)  # Pack the BaseMenu to fill the whole frame
-        self.focus_set()  # Set the focus to new menu
+        self.grid(row=1, column=0, sticky="ew")
+        self.focus_set()
 
     def hide(self):
-        self.pack_forget()  # Hide the BaseMenu
+        self.grid_forget()

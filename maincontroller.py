@@ -50,13 +50,16 @@ class MainController:
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
 
-        # Place the frames
-        # Place the frames with padding around the menu_frame
-        self.menu_frame.grid(
-            row=0, column=0, rowspan=2, sticky="nsew", padx=10, pady=10
+        # Place the menu_frame with rowspan=2 (under theto span two rows, and add padding on all sides
+        self.menu_frame.grid(row=0, column=0, sticky="nsew", padx=(10, 5), pady=(10, 5))
+        # Place the status_frame and add padding on left and right sides
+        self.status_frame.grid(
+            row=0, column=1, sticky="nsew", padx=(5, 10), pady=(10, 5)
         )
-        self.status_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
-        self.navigation_frame.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
+        # Place the navigation_frame and add padding on top and bottom sides
+        self.navigation_frame.grid(
+            row=1, column=0, sticky="nsew", padx=(10, 5), pady=(5, 10)
+        )
 
         # Create the start menu and control menu in the menu frame
         self.start_menu = StartMenu(self.menu_frame, self)
