@@ -4,6 +4,7 @@ import tkinter as tk
 import platform
 
 from src.frames.main_frame import create_main_frame
+from src.frames.info_frame import create_info_frame
 from src.frames.navigation_frame import create_navigation_frame
 from src.frames.status_frame import create_status_frame
 from src.frames.menu_frame import create_menu_frame
@@ -35,6 +36,7 @@ class MainController:
         self.device_labels = {}  # Add a dictionary to store device labels
 
         # Create frames for menu, status, and other
+        self.info_frame = create_info_frame()
         self.menu_frame = create_menu_frame(self.root)
         self.status_frame = create_status_frame(self.root, self.device_labels)
         self.navigation_frame = create_navigation_frame(
@@ -50,16 +52,18 @@ class MainController:
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
 
-        # Place the menu_frame with rowspan=2 (under theto span two rows, and add padding on all sides
+        # Place the menu_frame
         self.menu_frame.grid(row=0, column=0, sticky="nsew", padx=(10, 5), pady=(10, 5))
+        # Place the navigation_frame and add padding on left and right sides
+        self.navigation_frame.grid(
+            row=1, column=0, sticky="nsew", padx=(10, 5), pady=(5, 10)
+        )
         # Place the status_frame and add padding on left and right sides
         self.status_frame.grid(
             row=0, column=1, sticky="nsew", padx=(5, 10), pady=(10, 5)
         )
-        # Place the navigation_frame and add padding on top and bottom sides
-        self.navigation_frame.grid(
-            row=1, column=0, sticky="nsew", padx=(10, 5), pady=(5, 10)
-        )
+        # place the info_frame
+        self.info_frame.grid(row=1, column=1, sticky="nsew", padx=(5, 10), pady=(5, 10))
 
         # Create the start menu and control menu in the menu frame
         self.start_menu = StartMenu(self.menu_frame, self)
