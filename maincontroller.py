@@ -37,13 +37,16 @@ class MainController:
 
         # Create frames for menu, status, and other
         self.info_frame = create_info_frame()
-        self.menu_frame = create_menu_frame(self.root)
+        self.menu_frame = create_menu_frame(
+            self.root, self.ok_button_command, self.back_button_command
+        )
         self.status_frame = create_status_frame(self.root, self.device_labels)
         self.navigation_frame = create_navigation_frame(
             self.root,
-            self.ok_button_command,
-            self.back_button_command,
-            self.delete_button_command,
+            self.up_command,
+            self.down_command,
+            self.left_command,
+            self.right_command,
         )
 
         # Grid configuration
@@ -124,3 +127,15 @@ class MainController:
     def delete_button_command(self, event=None):
         self.current_menu.delete_command()
         print("Delete button was clicked!")
+
+    def up_command(self, event=None):
+        print("Ylös clicked")
+
+    def down_command(self, event=None):
+        print("Alas clicked")
+
+    def left_command(self, event=None):
+        print("Vasen clicked")
+
+    def right_command(self, event=None):
+        print("Oikea clicked")
