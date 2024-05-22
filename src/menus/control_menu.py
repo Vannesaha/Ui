@@ -24,7 +24,7 @@ class ControlMenu(BaseMenu):
 
     def __init__(self, parent, controller):
         """Initialize the ControlMenu with a parent frame and a controller."""
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bg="#0109D4")  # Ensure background color
         self.controller = controller
         self.button_manager = ButtonManager(self)
         self.create_buttons()
