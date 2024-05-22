@@ -1,6 +1,7 @@
 from tkinter import Tk, Canvas
 
 
+# Create the main frame for the application with a blue background
 def create_main_frame():
     root = Tk()
     root.geometry("800x460")
@@ -18,6 +19,5 @@ def create_main_frame():
 
     canvas.place(x=0, y=0)
     canvas.create_rectangle(0.0, 0.0, 800.0, 460.0, fill="#378AEC", outline="")
-    root.resizable(False, False)
 
     return root

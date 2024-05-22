@@ -38,11 +38,12 @@ class HydraulicMenu(BaseMenu):
             },
         ]
 
-        for i, button in enumerate(buttons):
-            if button.get("input"):
-                self.create_input_field(i, button)
+        # Create the buttons and input fields
+        for i, button in enumerate(buttons):  # Enumerate the buttons list
+            if button.get("input"):  # Check if the button has an "input" key
+                self.create_input_field(i, button)  # Create an input field
             else:
-                self.create_button(i, button)
+                self.create_button(i, button)  # Create a button
 
     def create_input_field(self, i, button):
         # Create a validation command

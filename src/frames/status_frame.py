@@ -6,7 +6,7 @@ STATUS_LABELS = {
     "hydraulic": "Hydraulic Status: ",
     "embedded": "Embedded Device Status: ",
     # Add more labels here
-}  # status comes from the MQTT message
+}
 
 STATUS_FRAME_TITLE = "Laitteiden tila"
 

@@ -36,6 +36,8 @@ def create_menu_frame(root, ok_button_command, back_button_command):
         text=BUTTON_OK_TEXT,
         command=ok_button_command,
     )
+
+    # Place the 'Jatka' button in the menu_frame
     continue_button.grid(row=3, column=0, padx=(5, 5), pady=(1, 5), sticky="e")
     continue_button.configure(
         width=10,
@@ -51,6 +53,8 @@ def create_menu_frame(root, ok_button_command, back_button_command):
         text=BUTTON_BACK_TEXT,
         command=back_button_command,
     )
+
+    # Place the 'Takaisin' button in the menu_frame
     back_button.grid(row=3, column=0, padx=(5, 5), pady=(1, 5), sticky="w")
     back_button.configure(
         width=10,

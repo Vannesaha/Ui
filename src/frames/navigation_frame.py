@@ -1,6 +1,12 @@
 import tkinter as tk
 
 
+BUTTON_UP_TEXT = "Ylös"
+BUTTON_DOWN_TEXT = "Alas"
+BUTTON_LEFT_TEXT = "Vasen"
+BUTTON_RIGHT_TEXT = "Oikea"
+
+
 def create_navigation_frame(
     root, up_command, down_command, left_command, right_command
 ):
@@ -14,7 +20,7 @@ def create_navigation_frame(
     # Create direction buttons and place them in the respective positions
     up_button = tk.Button(
         navigation_frame,
-        text="Ylös",
+        text=BUTTON_UP_TEXT,
         command=up_command,
         width=10,
         highlightbackground="#0109D4",
@@ -24,7 +30,7 @@ def create_navigation_frame(
     )
     down_button = tk.Button(
         navigation_frame,
-        text="Alas",
+        text=BUTTON_DOWN_TEXT,
         command=down_command,
         width=10,
         highlightbackground="#0109D4",
@@ -34,7 +40,7 @@ def create_navigation_frame(
     )
     left_button = tk.Button(
         navigation_frame,
-        text="Vasen",
+        text=BUTTON_LEFT_TEXT,
         command=left_command,
         width=10,
         highlightbackground="#0109D4",
@@ -44,7 +50,7 @@ def create_navigation_frame(
     )
     right_button = tk.Button(
         navigation_frame,
-        text="Oikea",
+        text=BUTTON_RIGHT_TEXT,
         command=right_command,
         width=10,
         highlightbackground="#0109D4",

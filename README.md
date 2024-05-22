@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project entails the development of a user interface application tailored for a band saw, focusing on user-friendliness and real-time functionality. The interface is created using Python, MQTT protocol, and TKINTER libraries. The project offers versatile tools for saw management and monitoring. Python provides the foundational logic for the application, TKINTER is utilized for creating the user interface, and MQTT enables communication between devices.
+The program currently features three example menus and the ability to view device updates. The screen size adjusts automatically based on the display, and the frames scale according to the content. The layout has been tested on a Raspberry Pi computer and may differ on other platforms. An MQTT connection is needed at the start of the program or program may not start.
 
 ## Table of Contents
 
@@ -32,6 +32,10 @@ Explanation of the main directories and files in the project.
 
 General overview of what the `UI` directory contains and its role in the project.
 
+### `assets/`
+
+Not in use but includes images for menus if they are needed.
+
 #### `config/`
 
 - `settings.py`: Contains configuration variables required for the application.
@@ -43,9 +47,11 @@ General overview of what the `UI` directory contains and its role in the project
 #### `frames/`
 
 - Detailed description of each UI frame component.
+  - `info_frame.py`: Handles the construction of the info frame.
+  - `main_frame.py`: Handles the construction of the main frame.
   - `menu_frame.py`: Handles the construction of the menu frame.
-  - `status_frame.py`: Manages the status section and its contents.
-  - `navigation_frame.py`: Contains navigation buttons and functionalities.
+  - `status_frame.py`: Handles the construction of the status frame and manages the status section and its contents.
+  - `navigation_frame.py`: Handles the construction of the navigation frame and contains navigation buttons and functionalities.
 
 #### `Menus/`
 
@@ -60,7 +66,7 @@ General overview of what the `UI` directory contains and its role in the project
 - Contains utility functions and tools for the application.
   - `button_manager.py`: functions for creating buttons and keyboard focus.
   - `mqtt_publisher.py`: Outline the responsibilities of handling MQTT messaging.
-  - `update_status.py`: Function for status update.
+  - `update_status.py`: Function for device status update.
   - `window_utils.py`: Function for setting max size for the window.
 
 ### `main.py`

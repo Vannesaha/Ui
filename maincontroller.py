@@ -87,6 +87,7 @@ class MainController:
         # Run the Tkinter event loop
         self.root.mainloop()
 
+    # Add a method to uodate statuses of devices in the status frame
     def sendStatusUpdate(self, device_id, status):
         self.device_statuses[device_id] = status  # Update the status in the dictionary
 
@@ -99,6 +100,7 @@ class MainController:
 
         print(device_id, status)  # Emit the signal with the provided parameters
 
+    # Add a method to switch between menus
     def switch_to_menu(self, menu_name):
         new_menu = getattr(self, f"{menu_name}")  # Get the menu object by name
         self.current_menu.hide()  # Hide the current menu
@@ -109,6 +111,7 @@ class MainController:
         )  # Push the current menu onto the stack
         self.current_menu = new_menu  # Update the current menu
 
+    # Add method to handle back button click
     def back_button_command(self, event=None):
         if self.menu_stack:  # If there is a previous menu
             self.current_menu.hide()  # Hide the current menu
@@ -120,10 +123,12 @@ class MainController:
             self.current_menu = previous_menu  # Update the current menu
         print("Back button was clicked!")
 
+    # Add method to handle ok button click in current_menu.ok_command() function
     def ok_button_command(self, event=None):
         self.current_menu.ok_command()
         print("OK button was clicked!")
 
+    # Add method to handle delete button click in current_menu.delete_command() function
     def delete_button_command(self, event=None):
         self.current_menu.delete_command()
         print("Delete button was clicked!")

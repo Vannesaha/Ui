@@ -3,6 +3,7 @@
 import tkinter as tk
 
 
+# ButtonManager class to manage buttons in the menu
 class ButtonManager:
     def __init__(self, parent):
         self.parent = parent
